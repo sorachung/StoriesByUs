@@ -37,7 +37,7 @@ export default function Login() {
           />
         </FormGroup>
         <FormGroup>
-          <Button>Login</Button>
+          <Button type="submit">Login</Button>
         </FormGroup>
         <em>
           Not registered? <Link to="register">Register</Link>

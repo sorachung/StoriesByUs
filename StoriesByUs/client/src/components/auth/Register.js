@@ -90,7 +90,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Button>Register</Button>
+          <Button type="submit">Register</Button>
         </FormGroup>
       </fieldset>
     </Box>
