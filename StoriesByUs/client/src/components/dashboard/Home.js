@@ -1,5 +1,6 @@
+import { Button } from "@mui/material";
 import React from "react";
-
+import { logout } from "../../modules/authManager";
 export default function Home() {
-  return <h1>Home Page</h1>;
+  return <Button onClick={logout}>Logout</Button>;
 }
