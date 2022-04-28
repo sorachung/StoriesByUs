@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from "@mui/material";
+import { Button, Box, FormGroup, FormLabel, Input } from "@mui/material";
 import { useHistory, Link } from "react-router-dom";
-import { login } from "../modules/authManager";
+import { login } from "../../modules/authManager";
 
 export default function Login() {
   const history = useHistory();
@@ -17,10 +17,10 @@ export default function Login() {
   };
 
   return (
-    <Form onSubmit={loginSubmit}>
+    <Box component="form" onSubmit={loginSubmit}>
       <fieldset>
         <FormGroup>
-          <Label for="email">Email</Label>
+          <FormLabel htmlFor="email">Email</FormLabel>
           <Input
             id="email"
             type="text"
@@ -29,7 +29,7 @@ export default function Login() {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="password">Password</Label>
+          <FormLabel htmlFor="password">Password</FormLabel>
           <Input
             id="password"
             type="password"
@@ -43,6 +43,6 @@ export default function Login() {
           Not registered? <Link to="register">Register</Link>
         </em>
       </fieldset>
-    </Form>
+    </Box>
   );
 }

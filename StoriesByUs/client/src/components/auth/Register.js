@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from "@mui/material";
+import { Button, Box, FormGroup, FormLabel, Input } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import { register } from "../modules/authManager";
+import { register } from "../../modules/authManager";
 
 export default function Register() {
   const history = useHistory();
@@ -31,10 +31,10 @@ export default function Register() {
   };
 
   return (
-    <Form onSubmit={registerClick}>
+    <Box component="form" onSubmit={registerClick}>
       <fieldset>
         <FormGroup>
-          <Label htmlFor="firstName">First Name</Label>
+          <FormLabel htmlFor="firstName">First Name</FormLabel>
           <Input
             id="firstName"
             type="text"
@@ -42,7 +42,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="lastName">Last Name</Label>
+          <FormLabel htmlFor="lastName">Last Name</FormLabel>
           <Input
             id="lastName"
             type="text"
@@ -50,7 +50,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="displayName">Display Name</Label>
+          <FormLabel htmlFor="displayName">Display Name</FormLabel>
           <Input
             id="displayName"
             type="text"
@@ -58,7 +58,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="email">Email</Label>
+          <FormLabel htmlFor="email">Email</FormLabel>
           <Input
             id="email"
             type="text"
@@ -66,7 +66,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="imageLocation">Profile Image URL</Label>
+          <FormLabel htmlFor="imageLocation">Profile Image URL</FormLabel>
           <Input
             id="imageLocation"
             type="text"
@@ -74,7 +74,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="password">Password</Label>
+          <FormLabel htmlFor="password">Password</FormLabel>
           <Input
             id="password"
             type="password"
@@ -82,7 +82,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="confirmPassword">Confirm Password</Label>
+          <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
           <Input
             id="confirmPassword"
             type="password"
@@ -93,6 +93,6 @@ export default function Register() {
           <Button>Register</Button>
         </FormGroup>
       </fieldset>
-    </Form>
+    </Box>
   );
 }
