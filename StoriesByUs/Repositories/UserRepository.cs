@@ -52,5 +52,28 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Add(User user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO User (FirebaseUserId, DisplayName, 
+                                                                 Email, Bio, UserTypeId)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@FirebaseUserId, @DisplayName, 
+                                                @Email, @Bio, @UserTypeId)";
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", user.FirebaseUserId);
+                    DbUtils.AddParameter(cmd, "@DisplayName", user.DisplayName);
+                    DbUtils.AddParameter(cmd, "@Email", user.Email);
+                    DbUtils.AddParameter(cmd, "@Bio", user.Bio);
+                    DbUtils.AddParameter(cmd, "@UserTypeId", user.UserTypeId);
+
+                    user.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }
