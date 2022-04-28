@@ -17,12 +17,12 @@ namespace StoriesByUs.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, Up.FirebaseUserId, up.DisplayName, 
-                               up.Email, up.Bio, up.UserTypeId,
-                               ut.Name AS UserTypeName
-                          FROM User up
-                               LEFT JOIN UserType ut on up.UserTypeId = ut.Id
-                         WHERE FirebaseUserId = @FirebaseuserId AND IsDeactivated = 0";
+                        SELECT u.Id, u.FirebaseUserId, u.DisplayName, 
+                               u.Email, u.Bio, u.UserTypeId,
+                               ut.[Name] AS UserTypeName
+                          FROM [User] u
+                               LEFT JOIN UserType ut on UserTypeId = ut.Id
+                         WHERE FirebaseUserId = @FirebaseuserId";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
 
