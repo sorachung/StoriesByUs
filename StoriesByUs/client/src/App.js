@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import ApplicationViews from "./components/ApplicationViews";
 import { onLoginStatusChange } from "./modules/authManager";
+import Navbar from "./components/nav/Navbar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <Router>
+      <Navbar isLoggedIn={isLoggedIn} />
       <ApplicationViews isLoggedIn={isLoggedIn} />
     </Router>
   );
