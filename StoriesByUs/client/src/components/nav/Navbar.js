@@ -7,17 +7,13 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "@mui/material";
-import { login, logout, register } from "../../modules/authManager";
+import { logout } from "../../modules/authManager";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -269,32 +265,37 @@ export default function Navbar({ isLoggedIn }) {
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: "flex" }}>
-                <MenuItem onClick={login}>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ display: "block" }}
-                    aria-controls={menuId}
-                    aria-haspopup="true"
+                <Typography
+                  variant="h6"
+                  noWrap
+                  padding="0 1em"
+                  component="div"
+                  sx={{ display: "block" }}
+                >
+                  <Link
+                    component={RouterLink}
+                    sx={{ textDecoration: "none" }}
                     color="#FFF"
+                    to="/login"
                   >
                     Login
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={register}>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ display: "block" }}
-                    aria-controls={menuId}
-                    aria-haspopup="true"
+                  </Link>
+                </Typography>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: "block" }}
+                >
+                  <Link
+                    component={RouterLink}
+                    sx={{ textDecoration: "none" }}
                     color="#FFF"
+                    to="/register"
                   >
                     Register
-                  </Typography>
-                </MenuItem>
+                  </Link>
+                </Typography>
               </Box>
             </>
           )}
