@@ -205,6 +205,22 @@ export default function Navbar({ isLoggedIn }) {
           </Typography>
           {isLoggedIn ? (
             <>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                paddingLeft="2em"
+                sx={{ display: { xs: "block", sm: "block" } }}
+              >
+                <Link
+                  component={RouterLink}
+                  sx={{ textDecoration: "none" }}
+                  color="#FFF"
+                  to="/browse"
+                >
+                  Browse
+                </Link>
+              </Typography>
               <Box sx={{ flexGrow: 1 }} />
               <Search>
                 <SearchIconWrapper>
