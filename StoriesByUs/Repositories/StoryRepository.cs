@@ -33,7 +33,8 @@ namespace StoriesByUs.Repositories
                                         JOIN Genre g ON g.Id = sg.GenreId
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
                                         JOIN Tag t ON t.Id = st.TagId
-                                   LEFT JOIN Bookmark b ON b.StoryId = s.Id;";
+                                   LEFT JOIN Bookmark b ON b.StoryId = s.Id
+                             ORDER BY s.LastUpdatedDateTime DESC;";
 
 
                     List<Story> stories = new List<Story>();
