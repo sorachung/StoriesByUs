@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StoriesByUs.Models
 {
@@ -13,5 +14,7 @@ namespace StoriesByUs.Models
         public bool Complete { get; set; }
         public Rating Rating { get; set; }
         public User User { get; set; }
+        public List<Chapter> Chapters { get; set; }
+        public List<Bookmark> Bookmarks { get; set; }
     }
 }
