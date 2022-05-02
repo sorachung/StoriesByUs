@@ -17,7 +17,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "@mui/material";
-import { logout } from "../../modules/authManager";
+import { login, logout, register } from "../../modules/authManager";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -231,7 +231,7 @@ export default function Navbar({ isLoggedIn }) {
                     noWrap
                     padding="0 1em"
                     component="div"
-                    sx={{ display: { xs: "block", sm: "block" } }}
+                    sx={{ display: "block" }}
                     aria-controls={menuId}
                     aria-haspopup="true"
                     color="#FFF"
@@ -265,7 +265,38 @@ export default function Navbar({ isLoggedIn }) {
               </Box>
             </>
           ) : (
-            <></>
+            <>
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ display: "flex" }}>
+                <MenuItem onClick={login}>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ display: "block" }}
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    color="#FFF"
+                  >
+                    Login
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={register}>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ display: "block" }}
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    color="#FFF"
+                  >
+                    Register
+                  </Typography>
+                </MenuItem>
+              </Box>
+            </>
           )}
         </Toolbar>
       </AppBar>
