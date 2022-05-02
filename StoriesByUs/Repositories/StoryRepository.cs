@@ -25,7 +25,7 @@ namespace StoriesByUs.Repositories
                                LEFT JOIN [User] u ON UserId = u.Id";
 
 
-                    List<Story> stories = null;
+                    List<Story> stories = new List<Story>();
 
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -37,7 +37,7 @@ namespace StoriesByUs.Repositories
                             Summary = DbUtils.GetString(reader, "Summary"),
                             Notes = DbUtils.GetString(reader, "Notes"),
                             PublishedDateTime = DbUtils.GetDateTime(reader, "PublishedDateTime"),
-                            LastUpdatedDateTime = DbUtils.GetDateTime(reader, "LastUpdateDateTime"),
+                            LastUpdatedDateTime = DbUtils.GetDateTime(reader, "LastUpdatedDateTime"),
                             Complete = DbUtils.GetBool(reader, "Complete"),
                             User = new User()
                             {

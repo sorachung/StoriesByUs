@@ -35,7 +35,7 @@ SET IDENTITY_INSERT [Rating] OFF
 SET IDENTITY_INSERT [Story] ON
 INSERT INTO [Story] (
 	[Id], [Title], [Summary], [Notes], [PublishedDateTime], [LastUpdatedDateTime], [RatingId], [UserId], [Complete])
-VALUES (1, 'Lorem ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisi etiam dignissim diam quis enim lobortis. Purus gravida quis blandit turpis cursus. Proin libero nunc consequat interdum varius sit. Fringilla ut morbi tincidunt augue interdum velit euismod in. Ultrices in iaculis nunc sed augue lacus viverra.', NULL, 1/19/2020, 1/19/2020, 1, 1, 0);
+VALUES (1, 'Lorem ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisi etiam dignissim diam quis enim lobortis. Purus gravida quis blandit turpis cursus. Proin libero nunc consequat interdum varius sit. Fringilla ut morbi tincidunt augue interdum velit euismod in. Ultrices in iaculis nunc sed augue lacus viverra.', NULL, '2020-01-19', '2020-01-19', 1, 1, 0);
 SET IDENTITY_INSERT [Story] OFF
 
 SET IDENTITY_INSERT [Chapter] ON
