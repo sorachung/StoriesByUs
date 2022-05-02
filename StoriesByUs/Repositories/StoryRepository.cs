@@ -64,39 +64,61 @@ namespace StoriesByUs.Repositories
                                     Id = DbUtils.GetInt(reader, "RatingId"),
                                     Level = DbUtils.GetString(reader, "Level")
                                 },
+                                Genres = new List<Genre>(),
+                                Tags = new List<Tag>(),
                                 Chapters = new List<Chapter>(),
                                 Bookmarks = new List<Bookmark>(),
 
                             };
                             stories.Add(existingStory);
                         }
-                        
+                        if (DbUtils.IsNotDbNull(reader, "TagId"))
+                        {
+                            var tagId = DbUtils.GetInt(reader, "TagId");
+                            if (existingStory.Tags.FirstOrDefault(t => t.Id == tagId) == null)
+                            {
+                                existingStory.Tags.Add(new Tag()
+                                {
+                                    Id = tagId,
+                                    Name = DbUtils.GetString(reader, "TagName")
+                                });
+                            }
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "GenreId"))
+                        {
+                            var genreId = DbUtils.GetInt(reader, "GenreId");
+                            if (existingStory.Genres.FirstOrDefault(g => g.Id == genreId) == null)
+                            {
+                                existingStory.Genres.Add(new Genre()
+                                {
+                                    Id = genreId,
+                                    Name = DbUtils.GetString(reader, "GenreName")
+                                });
+                            }
+                        }
 
                         if (DbUtils.IsNotDbNull(reader, "ChapterId"))
                         {
                             var chapterId = DbUtils.GetInt(reader, "ChapterId");
-                            var existingChapter = existingStory.Chapters.FirstOrDefault(c => c.Id == chapterId);
-                            if (existingChapter == null)
+                            if (existingStory.Chapters.FirstOrDefault(c => c.Id == chapterId) == null)
                             {
-                                existingChapter = new Chapter()
+                                existingStory.Chapters.Add(new Chapter()
                                 {
                                     Id = chapterId
-                                };
-                                existingStory.Chapters.Add(existingChapter);
+                                });
                             }
                            
                         }
                         if (DbUtils.IsNotDbNull(reader, "BookmarkId"))
                         {
                             var bookmarkId = DbUtils.GetInt(reader, "BookmarkId");
-                            var existingBookmark = existingStory.Bookmarks.FirstOrDefault(b => b.Id == bookmarkId);
-                            if (existingBookmark == null)
+                            if (existingStory.Bookmarks.FirstOrDefault(b => b.Id == bookmarkId) == null)
                             {
-                                existingBookmark = new Bookmark()
+                                existingStory.Bookmarks.Add(new Bookmark()
                                 {
                                     Id = bookmarkId
-                                };
-                                existingStory.Bookmarks.Add(existingBookmark);
+                                });
                             }
                         }
                     }

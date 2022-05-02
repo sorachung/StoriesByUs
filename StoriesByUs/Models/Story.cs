@@ -16,5 +16,7 @@ namespace StoriesByUs.Models
         public User User { get; set; }
         public List<Chapter> Chapters { get; set; }
         public List<Bookmark> Bookmarks { get; set; }
+        public List<Genre> Genres { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }
