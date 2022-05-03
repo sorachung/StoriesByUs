@@ -41,6 +41,38 @@ namespace StoriesByUs.Repositories
             }
         }
 
+        public Genre Get(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT g.Id AS gId, g.[Name]
+                            FROM Genre g
+                            WHERE g.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    Genre genre = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        genre = new Genre()
+                        {
+                            Id = DbUtils.GetInt(reader, "gId"),
+                            Name = DbUtils.GetString(reader, "Name")
+                        };
+                    }
+                    reader.Close();
+
+                    return genre;
+                }
+            }
+        }
+
         public List<Genre> GetAllWithStoryCountOverZero()
         {
             using (var conn = Connection)

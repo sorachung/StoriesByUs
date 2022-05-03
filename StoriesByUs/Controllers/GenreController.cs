@@ -22,6 +22,18 @@ namespace StoriesByUs.Controllers
             return Ok(_genreRepository.GetAll());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var genre = _genreRepository.Get(id);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            return Ok(genre);
+        }
+
+
         [HttpGet("withStoryCount")]
         public IActionResult GetWithStoryCount()
         {
