@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Browse from "./browse/Browse";
 import BrowseAll from "./browse/BrowseAll";
+import BrowseByGenre from "./browse/BrowseByGenre";
 import Home from "./dashboard/Home";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -19,6 +20,9 @@ export default function ApplicationViews({ isLoggedIn }) {
         </Route>
         <Route path="/browse/all" exact>
           {isLoggedIn ? <BrowseAll /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/browse/genre/:genreId(\d+)">
+          {isLoggedIn ? <BrowseByGenre /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">
