@@ -6,6 +6,7 @@ import Browse from "./browse/Browse";
 import BrowseAll from "./browse/BrowseAll";
 import BrowseByGenre from "./browse/BrowseByGenre";
 import BrowseByTag from "./browse/BrowseByTag";
+import Chapter from "./chapters/Chapter";
 import Home from "./dashboard/Home";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -27,6 +28,10 @@ export default function ApplicationViews({ isLoggedIn }) {
         </Route>
         <Route path="/browse/tag/:tagId(\d+)">
           {isLoggedIn ? <BrowseByTag /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route path="/works/:storyId(\d+)/chapters/:chapterId(\d+)">
+          {isLoggedIn ? <Chapter /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">
