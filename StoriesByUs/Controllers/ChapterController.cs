@@ -27,5 +27,11 @@ namespace StoriesByUs.Controllers
             }
             return Ok(chapter);
         }
+
+        [HttpGet("story/{storyId}")]
+        public IActionResult GetAllFromStory(int storyId)
+        {
+            return Ok(_chapterRepository.GetAllFromStory(storyId));
+        }
     }
 }

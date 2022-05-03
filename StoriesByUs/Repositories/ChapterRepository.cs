@@ -130,5 +130,40 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+        public List<Chapter> GetAllFromStory(int storyId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                           SELECT Id, Title, PlaceInOrder, WordCount
+                              FROM Chapter c
+                             WHERE StoryId = @storyId
+                             ORDER BY PlaceInOrder";
+
+                    DbUtils.AddParameter(cmd, "@storyId", storyId);
+
+                    List<Chapter> chapters = new List<Chapter>();
+
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                       var chapter = new Chapter()
+                       {
+                           Id = DbUtils.GetInt(reader, "Id"),
+                           Title = DbUtils.GetString(reader, "Title"),
+                           PlaceInOrder = DbUtils.GetInt(reader, "PlaceInOrder"),
+                           WordCount = DbUtils.GetInt(reader, "WordCount")
+                       };
+                        chapters.Add(chapter);
+                    }
+                    reader.Close();
+
+                    return chapters;
+                }
+            }
+        }
     }
 }
