@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { getAllStories, getStoriesByGenre } from "../../modules/storyManager";
+import { getStoriesByGenre } from "../../modules/storyManager";
 import { getGenreById } from "../../modules/genreManager";
 import { Container, Link } from "@mui/material";
-import { Link as RouterLink, MemoryRouter, useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import StoryCard from "../stories/StoryCard";
 
 export default function BrowseByGenre() {
   const [stories, setStories] = useState([]);
   const [chosenGenre, setChosenGenre] = useState({});
   const { genreId } = useParams();
+  const history = useHistory();
 
   const getStories = () => {
     getStoriesByGenre(genreId).then((storiesArr) => setStories(storiesArr));
   };
 
   const getGenre = () => {
-    getGenreById(genreId).then((genreData) => setChosenGenre(genreData));
+    getGenreById(genreId).then((genreData) => {
+      if (genreData === 404) {
+        history.push("/404");
+      }
+      setChosenGenre(genreData);
+    });
   };
 
   useEffect(() => {
-    // if (genreId) {
     getStories();
     getGenre();
-    // }
   }, [genreId]);
 
   return (
