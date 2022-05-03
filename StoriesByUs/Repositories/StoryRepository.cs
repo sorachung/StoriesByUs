@@ -21,7 +21,7 @@ namespace StoriesByUs.Repositories
                         SELECT s.Id AS [sId], s.Title, s.Summary, s.Notes, s.PublishedDateTime, s.LastUpdatedDateTime, s.Complete, s.UserId, s.RatingId, 
                           u.DisplayName,
                           r.[Level],
-                          c.Id AS ChapterId,
+                          c.Id AS ChapterId, c.PlaceInOrder,
                           sg.GenreId, g.[Name] AS GenreName,
                           st.TagId, t.[Name] AS TagName,
                           b.Id AS BookmarkId
@@ -106,7 +106,8 @@ namespace StoriesByUs.Repositories
                             {
                                 existingStory.Chapters.Add(new Chapter()
                                 {
-                                    Id = chapterId
+                                    Id = chapterId,
+                                    PlaceInOrder = DbUtils.GetInt(reader, "PlaceInOrder")
                                 });
                             }
 
