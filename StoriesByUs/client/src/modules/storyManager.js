@@ -9,6 +9,14 @@ export const getAllStories = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((resp) => resp.json())
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get stories."
+        );
+      }
+    })
   );
 };
