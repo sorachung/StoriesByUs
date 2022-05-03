@@ -7,6 +7,7 @@ namespace StoriesByUs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GenreController : ControllerBase
     {
         private readonly IGenreRepository _genreRepository;

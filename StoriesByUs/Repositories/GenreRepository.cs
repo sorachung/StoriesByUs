@@ -49,7 +49,7 @@ namespace StoriesByUs.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT g.Id, g.[Name], COUNT(s.Title) as StoryCount
+                        SELECT g.Id AS gId, g.[Name], COUNT(s.Title) as StoryCount
 	                        FROM Genre g
 	                            LEFT JOIN StoryGenre sg ON sg.GenreId = g.Id
 	                            LEFT JOIN Story s ON s.Id = sg.StoryId
