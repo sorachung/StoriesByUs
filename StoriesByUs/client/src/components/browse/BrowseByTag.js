@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { getStoriesByGenre } from "../../modules/storyManager";
-import { getGenreById } from "../../modules/genreManager";
+import { getStoriesByTag } from "../../modules/storyManager";
+import { getTagById } from "../../modules/tagManager";
 import { Container } from "@mui/material";
 import { useParams, useHistory } from "react-router-dom";
 import StoryCard from "../stories/StoryCard";
 
-export default function BrowseByGenre() {
+export default function BrowseByTag() {
   const [stories, setStories] = useState([]);
-  const [chosenGenre, setChosenGenre] = useState({});
-  const { genreId } = useParams();
+  const [chosenTag, setChosenTag] = useState({});
+  const { tagId } = useParams();
   const history = useHistory();
 
   const getStories = () => {
-    getStoriesByGenre(genreId).then((storiesArr) => setStories(storiesArr));
+    getStoriesByTag(tagId).then((storiesArr) => setStories(storiesArr));
   };
 
-  const getGenre = () => {
-    getGenreById(genreId).then((genreData) => {
-      if (genreData === 404) {
+  const getTag = () => {
+    getTagById(tagId).then((tagData) => {
+      if (tagData === 404) {
         history.push("/404");
       }
-      setChosenGenre(genreData);
+      setChosenTag(tagData);
     });
   };
 
   useEffect(() => {
+    // if (tagId) {
     getStories();
-    getGenre();
-  }, [genreId]);
+    getTag();
+    // }
+  }, [tagId]);
 
   return (
     <Container maxWidth="xl">
-      <h1>Browse by genre: {chosenGenre.name}</h1>
+      <h1>Browse by tag: {chosenTag.name}</h1>
       {stories.map((story) => (
         <StoryCard key={story.id} story={story} />
       ))}
