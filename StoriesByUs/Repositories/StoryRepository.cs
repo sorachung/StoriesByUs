@@ -44,7 +44,7 @@ namespace StoriesByUs.Repositories
                     {
                         var storyId = DbUtils.GetInt(reader, "sId");
                         var existingStory = stories.FirstOrDefault(s => s.Id == storyId);
-                        if(existingStory == null)
+                        if (existingStory == null)
                         {
                             existingStory = new Story()
                             {
@@ -109,7 +109,7 @@ namespace StoriesByUs.Repositories
                                     Id = chapterId
                                 });
                             }
-                           
+
                         }
                         if (DbUtils.IsNotDbNull(reader, "BookmarkId"))
                         {

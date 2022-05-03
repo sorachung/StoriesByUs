@@ -31,6 +31,7 @@ namespace StoriesByUs
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IStoryRepository, StoryRepository>();
+            services.AddTransient<IChapterRepository, ChapterRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
 
