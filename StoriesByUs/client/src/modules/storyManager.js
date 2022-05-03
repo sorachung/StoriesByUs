@@ -9,6 +9,33 @@ export const getAllStories = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((resp) => resp.json())
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get stories."
+        );
+      }
+    })
+  );
+};
+
+export const getStoriesByGenre = (genreId) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/genre/${genreId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get stories by genre."
+        );
+      }
+    })
   );
 };

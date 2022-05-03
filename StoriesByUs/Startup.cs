@@ -31,6 +31,7 @@ namespace StoriesByUs
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IStoryRepository, StoryRepository>();
+            services.AddTransient<IGenreRepository, GenreRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";
