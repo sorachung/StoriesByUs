@@ -19,7 +19,9 @@ export default function StoryCard({ story }) {
             <Link
               component={RouterLink}
               color="primary"
-              to={`/works/${story.id}/chapters/1`}
+              to={`/works/${story.id}/chapters/${
+                story.chapters.find((ch) => ch.placeInOrder === 1).id
+              }`}
             >
               {story.title}
             </Link>
