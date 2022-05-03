@@ -35,7 +35,7 @@ export const getGenreById = (id) => {
         return res.status;
       } else {
         throw new Error(
-          "An unknown error occurred while trying to get genres."
+          "An unknown error occurred while trying to get a genre."
         );
       }
     })

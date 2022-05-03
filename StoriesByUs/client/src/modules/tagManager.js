@@ -1,8 +1,8 @@
 import { getToken } from "./authManager";
 
-const _apiUrl = "/api/story";
+const _apiUrl = "/api/tag";
 
-export const getAllStories = () => {
+export const getAllTags = () => {
   return getToken().then((token) =>
     fetch(_apiUrl, {
       method: "GET",
@@ -14,16 +14,37 @@ export const getAllStories = () => {
         return res.json();
       } else {
         throw new Error(
-          "An unknown error occurred while trying to get stories."
+          "An unknown error occurred while trying to get tags."
         );
       }
     })
   );
 };
 
-export const getStoriesByGenre = (genreId) => {
+export const getTagById = (id) => {
   return getToken().then((token) =>
-    fetch(`${_apiUrl}/genre/${genreId}`, {
+    fetch(`${_apiUrl}/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else if (res.status == 404) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get a tag."
+        );
+      }
+    })
+  );
+};
+
+export const getTagsWithStoryCountOverZero = () => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/withstorycount`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,26 +54,7 @@ export const getStoriesByGenre = (genreId) => {
         return res.json();
       } else {
         throw new Error(
-          "An unknown error occurred while trying to get stories by genre."
-        );
-      }
-    })
-  );
-};
-
-export const getStoriesByTag = (tagId) => {
-  return getToken().then((token) =>
-    fetch(`${_apiUrl}/tag/${tagId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw new Error(
-          "An unknown error occurred while trying to get stories by tag."
+          "An unknown error occurred while trying to get tags with story count over zero."
         );
       }
     })
