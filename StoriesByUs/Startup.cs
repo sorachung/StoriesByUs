@@ -30,7 +30,7 @@ namespace StoriesByUs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IStoryRepository, StoryRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
