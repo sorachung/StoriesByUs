@@ -8,6 +8,6 @@
         public int PlaceInOrder { get; set; }
         public string Notes { get; set; }
         public Story Story { get; set; }
-
+        public int WordCount { get; set; }
     }
 }
