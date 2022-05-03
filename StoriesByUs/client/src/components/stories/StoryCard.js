@@ -78,6 +78,8 @@ export default function StoryCard({ story }) {
             <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
             <span>Chapters: {story.chapters.length}</span>
             <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
+            <span>Word Count: {story.wordCount}</span>
+            <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
             <span>
               Updated:{" "}
               {new Date(story.lastUpdatedDateTime).toLocaleDateString()}
