@@ -1,8 +1,13 @@
 import { Container, Link, Stack, Box } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getGenresWithStoryCountOverZero } from "../../modules/genreManager";
 export default function Browse() {
   const [genres, setGenres] = useState([]);
+
+  useEffect(() => {
+    getGenresWithStoryCountOverZero().then((genreData) => setGenres(genreData));
+  }, []);
 
   return (
     <Container maxWidth="xl">
@@ -21,7 +26,7 @@ export default function Browse() {
                 color="primary"
                 to={`/browse/genre/${g.id}`}
               >
-                {g.name}
+                {g.name} ({g.storyCount})
               </Link>
             </span>
           ))}
