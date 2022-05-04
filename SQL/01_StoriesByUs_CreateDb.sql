@@ -54,7 +54,8 @@ CREATE TABLE [Chapter] (
   [Title] nvarchar(255) NOT NULL,
   [Body] nvarchar(max) NOT NULL,
   [PlaceInOrder] int NOT NULL,
-  [Notes] nvarchar(max)
+  [Notes] nvarchar(max),
+  [WordCount] int NOT NULL
 )
 GO
 

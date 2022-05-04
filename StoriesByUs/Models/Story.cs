@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StoriesByUs.Models
 {
@@ -18,5 +19,12 @@ namespace StoriesByUs.Models
         public List<Bookmark> Bookmarks { get; set; }
         public List<Genre> Genres { get; set; }
         public List<Tag> Tags { get; set; }
+        public int WordCount
+        {
+            get
+            {
+                return Chapters.Sum(c => c.WordCount);
+            }
+        }
     }
 }
