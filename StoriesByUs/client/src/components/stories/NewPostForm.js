@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
-  Link,
   Stack,
   Box,
   Select,
@@ -12,6 +7,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  TextField,
+  Button,
 } from "@mui/material";
 import { getAllRatings } from "../../modules/ratingManager";
 
@@ -50,6 +47,66 @@ export default function NewPostForm() {
               </Select>
             </FormControl>
           </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField required id="title" label="Title" />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                required
+                id="summary"
+                label="Summary"
+                multiline
+                rows={5}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                id="storyNotes"
+                label="Story Notes"
+                multiline
+                rows={5}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                required
+                id="chapterTitle"
+                label="Chapter Title"
+                defaultValue="Chapter 1"
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                required
+                id="chapterBody"
+                label="Chapter Text"
+                multiline
+                rows={30}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                id="chapterNotes"
+                label="Chapter Notes"
+                multiline
+                rows={5}
+              />
+            </FormControl>
+          </Box>
+          <Button variant="contained" color="primary" type="submit">
+            Publish
+          </Button>
         </Stack>
       </Box>
     </Container>
