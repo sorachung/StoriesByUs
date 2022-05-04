@@ -133,7 +133,14 @@ export default function Navbar({ isLoggedIn }) {
       open={isPostMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Post a new Story</MenuItem>
+      <Link
+        component={RouterLink}
+        sx={{ textDecoration: "none" }}
+        color="text.primary"
+        to="/works/post"
+      >
+        <MenuItem onClick={handleMenuClose}>Post a new Story</MenuItem>
+      </Link>
       <MenuItem onClick={handleMenuClose}>Add a Chapter</MenuItem>
     </Menu>
   );
