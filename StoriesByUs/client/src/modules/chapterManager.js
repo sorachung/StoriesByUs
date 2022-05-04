@@ -2,9 +2,9 @@ import { getToken } from "./authManager";
 
 const _apiUrl = "/api/chapter";
 
-export const getChapterWithStory = (chapterId, storyId) => {
+export const getChapter = (placeInOrder, storyId) => {
   return getToken().then((token) =>
-    fetch(`${_apiUrl}/${chapterId}/story/${storyId}`, {
+    fetch(`${_apiUrl}/${placeInOrder}/story/${storyId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

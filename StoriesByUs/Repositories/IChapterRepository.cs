@@ -5,7 +5,6 @@ namespace StoriesByUs.Repositories
 {
     public interface IChapterRepository
     {
-        List<Chapter> GetAllFromStory(int storyId);
-        Chapter GetWithStory(int chapterId, int storyId);
+        Chapter GetOneFromStory(int storyId, int placeInOrder);
     }
 }

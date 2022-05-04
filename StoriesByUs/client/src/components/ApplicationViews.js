@@ -30,7 +30,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           {isLoggedIn ? <BrowseByTag /> : <Redirect to="/login" />}
         </Route>
 
-        <Route path="/works/:storyId(\d+)/chapters/:chapterId(\d+)">
+        <Route path="/works/:storyId(\d+)/chapters/:placeInOrder(\d+)">
           {isLoggedIn ? <Chapter /> : <Redirect to="/login" />}
         </Route>
 

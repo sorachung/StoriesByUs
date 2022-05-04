@@ -10,36 +10,18 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-export default function StoryCard({ story }) {
+export default function ChapterStoryInfo({ story }) {
+  if (!story) {
+    return null;
+  }
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }}>
-      <CardHeader
-        title={
-          <>
-            <Link
-              component={RouterLink}
-              color="primary"
-              to={`/works/${story.id}/chapters/1`}
-            >
-              {story.title}
-            </Link>
-            <span> by </span>
-            <Link
-              component={RouterLink}
-              color="primary"
-              to={`/users/${story.user.id}`}
-            >
-              {story.user.displayName}
-            </Link>
-          </>
-        }
-      />
+    <Card variant="outlined" sx={{ minWidth: 275, m: "2em 0" }}>
       <CardContent>
         <Stack spacing={2}>
           <Box component="div">
             <div>
               Genres:{" "}
-              {story.genres.map((g, i) => (
+              {story.genres?.map((g, i) => (
                 <span key={g.id}>
                   {i > 0 && ", "}
                   <Link
@@ -56,7 +38,7 @@ export default function StoryCard({ story }) {
           <Box component="div">
             <div>
               Tags:{" "}
-              {story.tags.map((t, i) => (
+              {story.tags?.map((t, i) => (
                 <span key={t.id}>
                   {i > 0 && ", "}
                   <Link
@@ -72,12 +54,13 @@ export default function StoryCard({ story }) {
           </Box>
           <Box component="div">{story.summary}</Box>
           <Box component="footer" sx={{ display: "flex" }}>
-            <span>Rating: {story.rating.level}</span>
+            <span>Rating: {story.rating?.level}</span>
             <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
-            <span>Chapters: {story.chapters.length}</span>
+            <span>Chapters: {story.chapters?.length}</span>
             <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
             <span>Word Count: {story.wordCount}</span>
             <Divider orientation="vertical" flexItem sx={{ m: "0 0.5em" }} />
+
             <span>
               Updated:{" "}
               {new Date(story.lastUpdatedDateTime).toLocaleDateString()}
@@ -97,7 +80,7 @@ export default function StoryCard({ story }) {
                 color="primary"
                 to={`/works/${story.id}/bookmarks/`}
               >
-                {story.bookmarks.length}
+                {story.bookmarks?.length}
               </Link>
             </span>
           </Box>

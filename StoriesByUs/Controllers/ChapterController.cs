@@ -15,23 +15,17 @@ namespace StoriesByUs.Controllers
         public ChapterController(IChapterRepository chapterRepository)
         {
             _chapterRepository = chapterRepository;
-        }
+        }        
 
-        [HttpGet("{chapterId}/story/{storyId}")]
-        public IActionResult GetWithStory(int chapterId, int storyId)
+        [HttpGet("{placeInOrder}/story/{storyId}")]
+        public IActionResult GetOneChapter(int placeInOrder, int storyId)
         {
-            var chapter = _chapterRepository.GetWithStory(chapterId, storyId);
+            var chapter = _chapterRepository.GetOneFromStory(storyId, placeInOrder);
             if (chapter == null)
             {
                 return NotFound();
             }
             return Ok(chapter);
-        }
-
-        [HttpGet("story/{storyId}")]
-        public IActionResult GetAllFromStory(int storyId)
-        {
-            return Ok(_chapterRepository.GetAllFromStory(storyId));
         }
     }
 }

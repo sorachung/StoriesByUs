@@ -1,17 +1,27 @@
-import { Container, Link, Stack, Box, Typography } from "@mui/material";
+import {
+  Container,
+  Link,
+  Stack,
+  Box,
+  Typography,
+  Divider,
+} from "@mui/material";
 import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
-import React, { useEffect, useState, Fragment } from "react";
-import { getChapterWithStory } from "../../modules/chapterManager";
+import React, { useEffect, useState } from "react";
+import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
+import ChapterStoryInfo from "./ChapterStoryInfo";
+import { getStory } from "../../modules/storyManager";
 
 export default function Chapter() {
   const [chapter, setChapter] = useState({});
-  const { chapterId } = useParams();
+  const [story, setStory] = useState({});
+  const { placeInOrder } = useParams();
   const { storyId } = useParams();
   const history = useHistory();
 
-  const getChapter = () => {
-    getChapterWithStory(chapterId, storyId).then((chapterData) => {
+  const getAndSetChapter = () => {
+    getChapter(placeInOrder, storyId).then((chapterData) => {
       if (chapterData === 404) {
         history.push("/404");
       }
@@ -19,18 +29,47 @@ export default function Chapter() {
     });
   };
 
+  const getAndSetStory = () => {
+    getStory(storyId).then((storyData) => {
+      if (storyData === 404) {
+        history.push("/404");
+      }
+      setStory(storyData);
+    });
+  };
+
   useEffect(() => {
-    getChapter();
-  }, [chapterId, storyId]);
+    getAndSetChapter();
+    getAndSetStory();
+  }, [placeInOrder, storyId]);
 
   return (
     <>
       <Container maxWidth="lg">
-        <Stack spacing={2}>
+        <Box component="section">
+          <ChapterStoryInfo story={story} />
+        </Box>
+        <Stack spacing={2} divider={<Divider flexItem />}>
           <Box component="section">
-            <Typography variant="h3" align="center" gutterbottom m="0.5em">
-              {chapter.title}
+            <Typography variant="h4" align="center" mt="0.5em">
+              {story.title}
             </Typography>
+            <Typography variant="h6" align="center">
+              <Link
+                component={RouterLink}
+                color="primary"
+                to={`/users/${story.user?.id}`}
+              >
+                {story.user?.displayName}
+              </Link>
+            </Typography>
+          </Box>
+          <Box component="section">
+            <Typography variant="h5" align="center" m="0.5em">
+              Chapter {chapter.placeInOrder}: {chapter.title}
+            </Typography>
+          </Box>
+          <Box component="section">
             <Typography
               component="article"
               variant="body1"

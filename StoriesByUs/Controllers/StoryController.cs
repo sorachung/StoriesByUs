@@ -23,6 +23,17 @@ namespace StoriesByUs.Controllers
             return Ok(_storyRepository.GetAll());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var story = _storyRepository.Get(id);
+            if (story == null)
+            {
+                return NotFound();
+            }
+            return Ok(story);
+        }
+
         [HttpGet("genre/{id}")]
         public IActionResult GetByGenre(int id)
         {
