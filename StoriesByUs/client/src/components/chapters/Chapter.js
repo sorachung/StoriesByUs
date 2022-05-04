@@ -81,6 +81,13 @@ export default function Chapter() {
 
   return (
     <>
+      <BookmarkDialog
+        existingBookmark={existingBookmark}
+        open={open}
+        handleClose={handleClose}
+        storyId={story.id}
+        getCurrentUserBookmark={getCurrentUserBookmark}
+      />
       <Container maxWidth="lg">
         <Stack spacing={2} divider={<Divider flexItem />}>
           <Stack direction="row" spacing={1}>
@@ -134,14 +141,6 @@ export default function Chapter() {
                 Bookmark
               </Button>
             )}
-
-            <BookmarkDialog
-              existingBookmark={existingBookmark}
-              open={open}
-              handleClose={handleClose}
-              storyId={story.id}
-              getCurrentUserBookmark={getCurrentUserBookmark}
-            />
           </Stack>
           <Box component="section">
             <ChapterStoryInfo story={story} />
@@ -174,7 +173,7 @@ export default function Chapter() {
               }}
             ></Typography>
           </Box>
-          <Box component="footer">
+          <Stack direction="row" spacing={1}>
             {chapter.placeInOrder === 1 ? (
               ""
             ) : (
@@ -195,7 +194,16 @@ export default function Chapter() {
                 <Button variant="contained">Next Chapter</Button>
               </Link>
             )}
-          </Box>
+            {existingBookmark ? (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Edit Bookmark
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Bookmark
+              </Button>
+            )}
+          </Stack>
         </Stack>
       </Container>
     </>
