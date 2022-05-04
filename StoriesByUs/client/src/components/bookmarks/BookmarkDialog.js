@@ -8,16 +8,30 @@ import {
   DialogActions,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { postBookmark } from "../../modules/bookmarkManager";
-export default function BookmarkAddDialog({ open, handleClose, storyId }) {
+import { postBookmark, putBookmark } from "../../modules/bookmarkManager";
+export default function BookmarkDialog({
+  existingBookmark,
+  open,
+  handleClose,
+  storyId,
+}) {
   const [bookmark, setBookmark] = useState({ storyId: storyId });
   const addBookmark = () => {
     postBookmark(bookmark);
   };
 
+  const editBookmark = () => {
+    putBookmark(bookmark.id);
+  };
+
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Add Bookmark?</DialogTitle>
+      {!existingBookmark ? (
+        <DialogTitle>Add Bookmark?</DialogTitle>
+      ) : (
+        <DialogTitle>Edit Bookmark?</DialogTitle>
+      )}
+
       <DialogContent>
         <TextField
           autoFocus
@@ -37,14 +51,25 @@ export default function BookmarkAddDialog({ open, handleClose, storyId }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button
-          onClick={() => {
-            handleClose();
-            addBookmark();
-          }}
-        >
-          Add
-        </Button>
+        {!existingBookmark ? (
+          <Button
+            onClick={() => {
+              handleClose();
+              addBookmark();
+            }}
+          >
+            Add
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              handleClose();
+              editBookmark();
+            }}
+          >
+            Save
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

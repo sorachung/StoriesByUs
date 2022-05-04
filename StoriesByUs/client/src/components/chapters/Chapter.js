@@ -8,7 +8,6 @@ import {
   Button,
   Select,
   FormControl,
-  InputLabel,
   MenuItem,
 } from "@mui/material";
 import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
@@ -17,15 +16,16 @@ import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
 import ChapterStoryInfo from "./ChapterStoryInfo";
 import { getStory } from "../../modules/storyManager";
-import BookmarkAddDialog from "../bookmarks/BookmarkAddDialog";
+import BookmarkDialog from "../bookmarks/BookmarkDialog";
+import { getBookmarkForStoryAndCurrentUser } from "../../modules/bookmarkManager";
 
 export default function Chapter() {
   const [chapter, setChapter] = useState({});
   const [story, setStory] = useState({});
   const { placeInOrder } = useParams();
   const { storyId } = useParams();
+  const [existingBookmark, setExistingBookmark] = useState(null);
   const history = useHistory();
-  const [chosenChapterNumber, setChosenChapterNumber] = useState(placeInOrder);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -54,11 +54,25 @@ export default function Chapter() {
     });
   };
 
+  const getCurrentUserBookmark = () => {
+    getBookmarkForStoryAndCurrentUser(story.id).then((bookmarkData) => {
+      if (bookmarkData === 404) {
+        setExistingBookmark(null);
+      }
+      setExistingBookmark(bookmarkData);
+    });
+  };
+
   useEffect(() => {
     getAndSetChapter();
     getAndSetStory();
+
     window.scrollTo(0, 0);
   }, [placeInOrder, storyId]);
+
+  useEffect(() => {
+    getCurrentUserBookmark();
+  }, [storyId]);
 
   if (!story.chapters || !story.user) {
     return null;
@@ -108,10 +122,18 @@ export default function Chapter() {
                 <Button variant="contained">Next Chapter</Button>
               </Link>
             )}
-            <Button variant="contained" onClick={handleClickOpen}>
-              Bookmark
-            </Button>
-            <BookmarkAddDialog
+            {existingBookmark ? (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Edit Bookmark
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Bookmark
+              </Button>
+            )}
+
+            <BookmarkDialog
+              existingBookmark={existingBookmark}
               open={open}
               handleClose={handleClose}
               storyId={story.id}
