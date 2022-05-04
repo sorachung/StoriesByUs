@@ -55,11 +55,12 @@ export default function Chapter() {
   };
 
   const getCurrentUserBookmark = () => {
-    getBookmarkForStoryAndCurrentUser(story.id).then((bookmarkData) => {
+    getBookmarkForStoryAndCurrentUser(storyId).then((bookmarkData) => {
       if (bookmarkData === 404) {
         setExistingBookmark(null);
+      } else {
+        setExistingBookmark(bookmarkData);
       }
-      setExistingBookmark(bookmarkData);
     });
   };
 
@@ -107,7 +108,9 @@ export default function Chapter() {
                   }
                 >
                   {story.chapters.map((c) => (
-                    <MenuItem value={c.placeInOrder}>{c.title}</MenuItem>
+                    <MenuItem key={c.placeInOrder} value={c.placeInOrder}>
+                      {c.title}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -137,6 +140,7 @@ export default function Chapter() {
               open={open}
               handleClose={handleClose}
               storyId={story.id}
+              getCurrentUserBookmark={getCurrentUserBookmark}
             />
           </Stack>
           <Box component="section">

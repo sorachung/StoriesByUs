@@ -63,5 +63,25 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Edit(Bookmark bookmark)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Bookmark
+                           SET Notes = @Notes
+                         WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Notes", bookmark.Notes);
+                    DbUtils.AddParameter(cmd, "@Id", bookmark.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

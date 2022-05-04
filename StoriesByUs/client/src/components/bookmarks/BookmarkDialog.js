@@ -1,4 +1,3 @@
-import { callExpression } from "@babel/types";
 import {
   Dialog,
   DialogTitle,
@@ -14,15 +13,24 @@ export default function BookmarkDialog({
   open,
   handleClose,
   storyId,
+  getCurrentUserBookmark,
 }) {
-  const [bookmark, setBookmark] = useState({ storyId: storyId });
+  const bookmarkTemp =
+    existingBookmark === null ? { storyId: storyId } : existingBookmark;
+  const [bookmark, setBookmark] = useState(bookmarkTemp);
   const addBookmark = () => {
-    postBookmark(bookmark);
+    postBookmark(bookmark).then(getCurrentUserBookmark);
   };
 
   const editBookmark = () => {
-    putBookmark(bookmark.id);
+    putBookmark(bookmark).then(getCurrentUserBookmark);
   };
+
+  useEffect(() => {
+    existingBookmark === null
+      ? setBookmark({ storyId: storyId })
+      : setBookmark(existingBookmark);
+  }, [existingBookmark]);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -42,6 +50,7 @@ export default function BookmarkDialog({
           fullWidth
           multiline
           rows={4}
+          value={bookmark.notes}
           onChange={(evt) => {
             const copy = { ...bookmark };
             copy.notes = evt.target.value;

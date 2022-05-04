@@ -32,7 +32,15 @@ export const postBookmark = (bookmark) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(bookmark),
-    }).then((resp) => resp.json())
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to edit a bookmark."
+        );
+      }
+    })
   );
 };
 
@@ -45,6 +53,14 @@ export const putBookmark = (bookmark) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(bookmark),
-    }).then((resp) => resp.json())
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to edit a bookmark."
+        );
+      }
+    })
   );
 };

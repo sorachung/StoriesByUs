@@ -49,6 +49,17 @@ namespace StoriesByUs.Controllers
                 bookmark);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Bookmark bookmark)
+        {
+            if (id != bookmark.Id)
+            {
+                return BadRequest();
+            }
+            _bookmarkRepository.Edit(bookmark);
+            return NoContent();
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
