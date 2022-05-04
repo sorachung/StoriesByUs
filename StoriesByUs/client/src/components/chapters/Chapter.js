@@ -17,6 +17,7 @@ import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
 import ChapterStoryInfo from "./ChapterStoryInfo";
 import { getStory } from "../../modules/storyManager";
+import BookmarkAddDialog from "../bookmarks/BookmarkAddDialog";
 
 export default function Chapter() {
   const [chapter, setChapter] = useState({});
@@ -25,6 +26,15 @@ export default function Chapter() {
   const { storyId } = useParams();
   const history = useHistory();
   const [chosenChapterNumber, setChosenChapterNumber] = useState(placeInOrder);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const getAndSetChapter = () => {
     getChapter(placeInOrder, storyId).then((chapterData) => {
@@ -58,7 +68,7 @@ export default function Chapter() {
     <>
       <Container maxWidth="lg">
         <Stack spacing={2} divider={<Divider flexItem />}>
-          <Box component="header">
+          <Stack direction="row" spacing={1}>
             {chapter.placeInOrder === 1 ? (
               ""
             ) : (
@@ -98,7 +108,15 @@ export default function Chapter() {
                 <Button variant="contained">Next Chapter</Button>
               </Link>
             )}
-          </Box>
+            <Button variant="contained" onClick={handleClickOpen}>
+              Bookmark
+            </Button>
+            <BookmarkAddDialog
+              open={open}
+              handleClose={handleClose}
+              storyId={story.id}
+            />
+          </Stack>
           <Box component="section">
             <ChapterStoryInfo story={story} />
           </Box>
