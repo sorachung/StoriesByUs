@@ -8,7 +8,6 @@ import {
   Button,
   Select,
   FormControl,
-  InputLabel,
   MenuItem,
 } from "@mui/material";
 import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
@@ -17,15 +16,16 @@ import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
 import ChapterStoryInfo from "./ChapterStoryInfo";
 import { getStory } from "../../modules/storyManager";
-import BookmarkAddDialog from "../bookmarks/BookmarkAddDialog";
+import BookmarkDialog from "../bookmarks/BookmarkDialog";
+import { getBookmarkForStoryAndCurrentUser } from "../../modules/bookmarkManager";
 
 export default function Chapter() {
   const [chapter, setChapter] = useState({});
   const [story, setStory] = useState({});
   const { placeInOrder } = useParams();
   const { storyId } = useParams();
+  const [existingBookmark, setExistingBookmark] = useState(null);
   const history = useHistory();
-  const [chosenChapterNumber, setChosenChapterNumber] = useState(placeInOrder);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -54,11 +54,26 @@ export default function Chapter() {
     });
   };
 
+  const getCurrentUserBookmark = () => {
+    getBookmarkForStoryAndCurrentUser(storyId).then((bookmarkData) => {
+      if (bookmarkData === 404) {
+        setExistingBookmark(null);
+      } else {
+        setExistingBookmark(bookmarkData);
+      }
+    });
+  };
+
   useEffect(() => {
     getAndSetChapter();
     getAndSetStory();
+
     window.scrollTo(0, 0);
   }, [placeInOrder, storyId]);
+
+  useEffect(() => {
+    getCurrentUserBookmark();
+  }, [storyId]);
 
   if (!story.chapters || !story.user) {
     return null;
@@ -66,6 +81,13 @@ export default function Chapter() {
 
   return (
     <>
+      <BookmarkDialog
+        existingBookmark={existingBookmark}
+        open={open}
+        handleClose={handleClose}
+        storyId={story.id}
+        getCurrentUserBookmark={getCurrentUserBookmark}
+      />
       <Container maxWidth="lg">
         <Stack spacing={2} divider={<Divider flexItem />}>
           <Stack direction="row" spacing={1}>
@@ -93,7 +115,9 @@ export default function Chapter() {
                   }
                 >
                   {story.chapters.map((c) => (
-                    <MenuItem value={c.placeInOrder}>{c.title}</MenuItem>
+                    <MenuItem key={c.placeInOrder} value={c.placeInOrder}>
+                      {c.title}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -108,14 +132,15 @@ export default function Chapter() {
                 <Button variant="contained">Next Chapter</Button>
               </Link>
             )}
-            <Button variant="contained" onClick={handleClickOpen}>
-              Bookmark
-            </Button>
-            <BookmarkAddDialog
-              open={open}
-              handleClose={handleClose}
-              storyId={story.id}
-            />
+            {existingBookmark ? (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Edit Bookmark
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Bookmark
+              </Button>
+            )}
           </Stack>
           <Box component="section">
             <ChapterStoryInfo story={story} />
@@ -148,7 +173,7 @@ export default function Chapter() {
               }}
             ></Typography>
           </Box>
-          <Box component="footer">
+          <Stack direction="row" spacing={1}>
             {chapter.placeInOrder === 1 ? (
               ""
             ) : (
@@ -169,7 +194,16 @@ export default function Chapter() {
                 <Button variant="contained">Next Chapter</Button>
               </Link>
             )}
-          </Box>
+            {existingBookmark ? (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Edit Bookmark
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Bookmark
+              </Button>
+            )}
+          </Stack>
         </Stack>
       </Container>
     </>

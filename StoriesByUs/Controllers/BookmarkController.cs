@@ -26,6 +26,18 @@ namespace StoriesByUs.Controllers
             return Ok();
         }
 
+        [HttpGet("story/{storyId}")]
+        public IActionResult GetCurrentUsersBookmarkForStory(int storyId)
+        {
+            var currentUserId = GetCurrentUser().Id;
+            var bookmark = _bookmarkRepository.GetByStoryAndUser(storyId, currentUserId);
+            if (bookmark == null)
+            {
+                return NotFound();
+            }
+            return Ok(bookmark);
+        }
+
         [HttpPost]
         public IActionResult Post(Bookmark bookmark)
         {
@@ -35,6 +47,17 @@ namespace StoriesByUs.Controllers
                 "Get",
                 new { id = bookmark.Id },
                 bookmark);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Bookmark bookmark)
+        {
+            if (id != bookmark.Id)
+            {
+                return BadRequest();
+            }
+            _bookmarkRepository.Edit(bookmark);
+            return NoContent();
         }
 
         private User GetCurrentUser()
