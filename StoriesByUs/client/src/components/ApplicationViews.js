@@ -40,7 +40,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
         </Route>
 
-        <Route path="/users/:id(\d+)">
+        <Route path="/users/:userId(\d+)">
           {isLoggedIn ? <Profile /> : <Redirect to="/login" />}
         </Route>
 

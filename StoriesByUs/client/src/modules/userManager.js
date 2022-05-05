@@ -16,7 +16,7 @@ export const getUser = (id) => {
         return res.status;
       } else {
         throw new Error(
-          "An unknown error occurred while trying to get a story."
+          "An unknown error occurred while trying to get a user."
         );
       }
     })

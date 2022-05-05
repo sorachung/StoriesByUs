@@ -12,7 +12,7 @@ export const getBookmarkForStoryAndCurrentUser = (storyId) => {
     }).then((res) => {
       if (res.ok) {
         return res.json();
-      } else if (res.status == 404) {
+      } else if (res.status === 404) {
         return res.status;
       } else {
         throw new Error(
