@@ -52,6 +52,12 @@ namespace StoriesByUs.Controllers
             return Ok(_storyRepository.GetByTag(id));
         }
 
+        [HttpGet("user/{id}")]
+        public IActionResult GetByUser(int id)
+        {
+            return Ok(_storyRepository.GetByUser(id));
+        }
+
         [HttpPost]
         public IActionResult Post(Story story)
         {

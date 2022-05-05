@@ -59,6 +59,25 @@ export const getStoriesByTag = (tagId) => {
   );
 };
 
+export const getStoriesByUser = (userId) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/user/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get stories by user."
+        );
+      }
+    })
+  );
+};
+
 export const getStory = (id) => {
   return getToken().then((token) =>
     fetch(`${_apiUrl}/${id}`, {

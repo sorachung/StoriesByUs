@@ -12,6 +12,7 @@ import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../modules/userManager";
 import Dashboard from "./Dashboard";
+import ProfileStoriesList from "./ProfileStoriesList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -24,11 +25,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -93,7 +90,7 @@ export default function Profile() {
           <Dashboard user={user} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <ProfileStoriesList user={user} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three

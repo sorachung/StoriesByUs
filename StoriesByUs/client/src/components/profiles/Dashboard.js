@@ -6,9 +6,7 @@ export default function Dashboard({ user }) {
     <Container maxWidth="xl">
       <Box component="section">
         <h2>Bio:</h2>
-        <Typography variant="body1" color="text.primary">
-          {user.bio}
-        </Typography>
+        {user.bio}
       </Box>
     </Container>
   );
