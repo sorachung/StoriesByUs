@@ -60,6 +60,13 @@ namespace StoriesByUs.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _bookmarkRepository.Delete(id);
+            return NoContent();
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

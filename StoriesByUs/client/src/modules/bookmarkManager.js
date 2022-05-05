@@ -64,3 +64,22 @@ export const putBookmark = (bookmark) => {
     })
   );
 };
+
+export const deleteBookmark = (id) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to delete a bookmark."
+        );
+      }
+    })
+  );
+};

@@ -7,7 +7,11 @@ import {
   DialogActions,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { postBookmark, putBookmark } from "../../modules/bookmarkManager";
+import {
+  deleteBookmark,
+  postBookmark,
+  putBookmark,
+} from "../../modules/bookmarkManager";
 export default function BookmarkDialog({
   existingBookmark,
   open,
@@ -23,6 +27,11 @@ export default function BookmarkDialog({
   };
 
   const editBookmark = () => {
+    putBookmark(bookmark).then(getCurrentUserBookmark);
+  };
+
+  const removeBookmark = () => {
+    deleteBookmark(bookmark.id).then(getCurrentUserBookmark);
     putBookmark(bookmark).then(getCurrentUserBookmark);
   };
 
@@ -59,7 +68,6 @@ export default function BookmarkDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
         {!existingBookmark ? (
           <Button
             onClick={() => {
@@ -70,15 +78,26 @@ export default function BookmarkDialog({
             Add
           </Button>
         ) : (
-          <Button
-            onClick={() => {
-              handleClose();
-              editBookmark();
-            }}
-          >
-            Save
-          </Button>
+          <>
+            <Button
+              onClick={() => {
+                handleClose();
+                removeBookmark();
+              }}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                editBookmark();
+              }}
+            >
+              Save
+            </Button>
+          </>
         )}
+        <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
   );
