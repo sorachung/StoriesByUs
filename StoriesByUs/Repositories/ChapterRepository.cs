@@ -46,5 +46,29 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Add(Chapter chapter)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Chapter (Title, StoryId, Notes, Body, PlaceInOrder, WordCount)
+                        OUTPUT INSERTED.ID
+                        VALUES (@Title, @StoryId, @Notes, @Body, @PlaceInOrder, @WordCount)";
+
+                    DbUtils.AddParameter(cmd, "@Title", chapter.Title);
+                    DbUtils.AddParameter(cmd, "@StoryId", chapter.Story.Id);
+                    DbUtils.AddParameter(cmd, "@Notes", chapter.Notes);
+                    DbUtils.AddParameter(cmd, "@Body", chapter.Body);
+                    DbUtils.AddParameter(cmd, "@PlaceInOrder", chapter.PlaceInOrder);
+                    DbUtils.AddParameter(cmd, "@WordCount", chapter.WordCount);
+
+                    chapter.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }

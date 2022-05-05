@@ -30,9 +30,9 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN [User] u ON UserId = u.Id
                                    LEFT JOIN Chapter c ON c.StoryId = s.Id
                                    LEFT JOIN StoryGenre sg ON sg.StoryId = s.Id
-                                        JOIN Genre g ON g.Id = sg.GenreId
+                                   LEFT JOIN Genre g ON g.Id = sg.GenreId
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
-                                        JOIN Tag t ON t.Id = st.TagId
+                                   LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
                              ORDER BY s.LastUpdatedDateTime DESC;";
 
@@ -152,9 +152,9 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN [User] u ON UserId = u.Id
                                    LEFT JOIN Chapter c ON c.StoryId = s.Id
                                    LEFT JOIN StoryGenre sg ON sg.StoryId = s.Id
-                                        JOIN Genre g ON g.Id = sg.GenreId
+                                   LEFT JOIN Genre g ON g.Id = sg.GenreId
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
-                                        JOIN Tag t ON t.Id = st.TagId
+                                   LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
                              WHERE s.Id in 
                                             (SELECT s.Id 
@@ -280,9 +280,9 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN [User] u ON UserId = u.Id
                                    LEFT JOIN Chapter c ON c.StoryId = s.Id
                                    LEFT JOIN StoryGenre sg ON sg.StoryId = s.Id
-                                        JOIN Genre g ON g.Id = sg.GenreId
+                                   LEFT JOIN Genre g ON g.Id = sg.GenreId
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
-                                        JOIN Tag t ON t.Id = st.TagId
+                                   LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
                              WHERE s.Id in 
                                             (SELECT s.Id 
@@ -408,9 +408,9 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN [User] u ON UserId = u.Id
                                    LEFT JOIN Chapter c ON c.StoryId = s.Id
                                    LEFT JOIN StoryGenre sg ON sg.StoryId = s.Id
-                                        JOIN Genre g ON g.Id = sg.GenreId
+                                   LEFT JOIN Genre g ON g.Id = sg.GenreId
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
-                                        JOIN Tag t ON t.Id = st.TagId
+                                   LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
                              WHERE s.Id in 
                                             (SELECT s.Id 
@@ -510,6 +510,86 @@ namespace StoriesByUs.Repositories
                     reader.Close();
 
                     return story;
+                }
+            }
+        }
+
+        public void Add(Story story)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Story (Title, Summary, Notes, RatingId, UserId, PublishedDateTime, LastUpdatedDateTime, Complete)
+                        OUTPUT INSERTED.ID
+                        VALUES (@Title, @Summary, @Notes, @RatingId, @UserId, @PublishedDateTime, @LastUpdatedDateTime, @Complete)";
+
+                    DbUtils.AddParameter(cmd, "@Title", story.Title);
+                    DbUtils.AddParameter(cmd, "@Summary", story.Summary);
+                    DbUtils.AddParameter(cmd, "@Notes", story.Notes);
+                    DbUtils.AddParameter(cmd, "@RatingId", story.Rating.Id);
+                    DbUtils.AddParameter(cmd, "@UserId", story.User.Id);
+                    DbUtils.AddParameter(cmd, "@PublishedDateTime", story.PublishedDateTime);
+                    DbUtils.AddParameter(cmd, "@LastUpdatedDateTime", story.LastUpdatedDateTime);
+                    DbUtils.AddParameter(cmd, "@Complete", story.Complete);
+
+                    story.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void AddStoryTags(int storyId, List<int> tagIds)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO StoryTag (StoryId, TagId)
+                        VALUES (@StoryId, @TagId0)";
+
+                    for(var i = 1; i < tagIds.Count; i++)
+                    {
+                        cmd.CommandText += $", (@StoryId, @TagId{i}) ";
+                    };
+
+                    for (var i = 0; i < tagIds.Count; i++)
+                    {
+                        DbUtils.AddParameter(cmd, $"@TagId{i}", tagIds[i]);
+
+                    }
+                    DbUtils.AddParameter(cmd, "@StoryId", storyId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddStoryGenres(int storyId, List<int> genreIds)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO StoryGenre (StoryId, GenreId)
+                        VALUES (@StoryId, @GenreId0)";
+
+                    for (var i = 1; i < genreIds.Count; i++)
+                    {
+                        cmd.CommandText += $", (@StoryId, @GenreId{i}) ";
+                    };
+
+                    for (var i = 0; i < genreIds.Count; i++)
+                    {
+                        DbUtils.AddParameter(cmd, $"@GenreId{i}", genreIds[i]);
+
+                    }
+                    DbUtils.AddParameter(cmd, "@StoryId", storyId);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

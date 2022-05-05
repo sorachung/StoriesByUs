@@ -11,17 +11,25 @@ import {
   Button,
   Autocomplete,
 } from "@mui/material";
+import { useHistory } from "react-router-dom";
 import { getAllRatings } from "../../modules/ratingManager";
 import { getAllTags } from "../../modules/tagManager";
 import { getAllGenres } from "../../modules/genreManager";
-import { wordCounter } from "../../modules/wordCounter";
+import { addChapter } from "../../modules/chapterManager";
+import {
+  addStory,
+  addStoryGenres,
+  addStoryTags,
+} from "../../modules/storyManager";
 
 export default function NewPostForm() {
+  const history = useHistory();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [notes, setNotes] = useState(null);
   const [rating, setRating] = useState(1);
   const [tags, setTags] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   const [chapterTitle, setChapterTitle] = useState("Chapter 1");
   const [chapterBody, setChapterBody] = useState("");
@@ -54,18 +62,25 @@ export default function NewPostForm() {
       title: title,
       summary: summary,
       notes: notes,
-      ratingId: rating,
+      rating: { id: rating },
       complete: false,
     };
-    const storyId = 0;
-    const newChapter = {
-      storyId: storyId,
-      title: chapterTitle,
-      body: chapterBody,
-      notes: chapterNotes,
-      placeInOrder: 1,
-      wordCount: wordCounter(chapterBody),
-    };
+
+    addStory(newStory).then((storyData) => {
+      const newChapter = {
+        story: { id: storyData.id },
+        title: chapterTitle,
+        body: chapterBody,
+        notes: chapterNotes,
+        placeInOrder: 1,
+      };
+      Promise.all([
+        addChapter(newChapter),
+        addStoryTags(storyData.id, tags),
+        addStoryGenres(storyData.id, genres),
+      ]).then(() => history.push(`/works/${storyData.id}/chapters/1`));
+    });
+
     //add StoryTag objects
     //add StoryGenre objects
   };
@@ -100,7 +115,7 @@ export default function NewPostForm() {
               <Autocomplete
                 multiple
                 disablePortal
-                id="combo-box-demo"
+                id="tag-autocomplete"
                 onChange={(e, values) => {
                   setTags(values);
                 }}
@@ -113,13 +128,36 @@ export default function NewPostForm() {
                     label="Search Tags"
                     type="search"
                     variant="outlined"
-                    placeHolder="Tag"
+                    placeholder="Tag"
                   />
                 )}
               />
             </FormControl>
           </Box>
-
+          <Box>
+            <FormControl fullWidth>
+              <Autocomplete
+                multiple
+                disablePortal
+                id="genre-autocomplete"
+                onChange={(e, values) => {
+                  setGenres(values);
+                }}
+                getOptionLabel={(option) => option.name ?? option}
+                options={genresList}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Genres"
+                    type="search"
+                    variant="outlined"
+                    placeholder="Genre"
+                  />
+                )}
+              />
+            </FormControl>
+          </Box>
           <Box>
             <FormControl fullWidth>
               <TextField

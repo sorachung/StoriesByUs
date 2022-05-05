@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoriesByUs.Models;
 using StoriesByUs.Repositories;
+using StoriesByUs.Utils;
 
 namespace StoriesByUs.Controllers
 {
@@ -17,6 +18,12 @@ namespace StoriesByUs.Controllers
             _chapterRepository = chapterRepository;
         }        
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok();
+        }
+
         [HttpGet("{placeInOrder}/story/{storyId}")]
         public IActionResult GetOneChapter(int placeInOrder, int storyId)
         {
@@ -26,6 +33,21 @@ namespace StoriesByUs.Controllers
                 return NotFound();
             }
             return Ok(chapter);
+        }
+
+        [HttpPost]
+        public IActionResult Post(Chapter chapter)
+        {
+
+            if (string.IsNullOrWhiteSpace(chapter.Notes))
+            {
+                chapter.Notes = null;
+            }
+            chapter.WordCount = WordCounter.Count(chapter.Body);
+
+            _chapterRepository.Add(chapter);
+
+            return CreatedAtAction("Get", new { id = chapter.Id }, chapter);
         }
     }
 }

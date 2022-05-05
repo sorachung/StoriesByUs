@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoriesByUs.Models;
 using StoriesByUs.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace StoriesByUs.Controllers
 {
@@ -12,9 +16,11 @@ namespace StoriesByUs.Controllers
     public class StoryController : ControllerBase
     {
         private readonly IStoryRepository _storyRepository;
-        public StoryController(IStoryRepository storyRepository)
+        private readonly IUserRepository _userRepository;
+        public StoryController(IStoryRepository storyRepository, IUserRepository userRepository)
         {
             _storyRepository = storyRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -44,6 +50,53 @@ namespace StoriesByUs.Controllers
         public IActionResult GetByTag(int id)
         {
             return Ok(_storyRepository.GetByTag(id));
+        }
+
+        [HttpPost]
+        public IActionResult Post(Story story)
+        {
+            story.User = new User()
+            {
+                Id = GetCurrentUser().Id
+            };
+
+            story.PublishedDateTime = DateTime.Now;
+            story.LastUpdatedDateTime = DateTime.Now;
+
+            if (string.IsNullOrWhiteSpace(story.Notes))
+            {
+                story.Notes = null;
+            }
+
+            _storyRepository.Add(story);
+
+            return CreatedAtAction("Get", new { id = story.Id }, story);
+        }
+
+        [HttpPost("{storyId}/tags")]
+        public IActionResult PostStoryTag(int storyId, List<Tag> tags)
+        {
+            var tagIds = tags.Select(t => t.Id).ToList();
+            
+            _storyRepository.AddStoryTags(storyId, tagIds);
+
+            return CreatedAtAction("Get", tags);
+        }
+
+        [HttpPost("{storyId}/genres")]
+        public IActionResult PostStoryGenre(int storyId, List<Genre> genres)
+        {
+            var genreIds = genres.Select(g => g.Id).ToList();
+
+            _storyRepository.AddStoryGenres(storyId, genreIds);
+
+            return CreatedAtAction("Get", genres);
+        }
+
+        private User GetCurrentUser()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }
