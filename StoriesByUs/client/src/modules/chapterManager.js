@@ -22,3 +22,24 @@ export const getChapter = (placeInOrder, storyId) => {
     })
   );
 };
+
+export const addChapter = (chapter) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(chapter),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save a new chapter."
+        );
+      }
+    });
+  });
+};

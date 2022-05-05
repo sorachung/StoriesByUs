@@ -8,6 +8,7 @@ import BrowseByGenre from "./browse/BrowseByGenre";
 import BrowseByTag from "./browse/BrowseByTag";
 import Chapter from "./chapters/Chapter";
 import Home from "./dashboard/Home";
+import NewPostForm from "./stories/NewPostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -32,6 +33,10 @@ export default function ApplicationViews({ isLoggedIn }) {
 
         <Route path="/works/:storyId(\d+)/chapters/:placeInOrder(\d+)">
           {isLoggedIn ? <Chapter /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route path="/works/post">
+          {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">

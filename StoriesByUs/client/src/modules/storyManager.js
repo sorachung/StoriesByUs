@@ -79,3 +79,66 @@ export const getStory = (id) => {
     })
   );
 };
+
+export const addStory = (story) => {
+  return getToken().then((token) => {
+    return fetch(_apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(story),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save a new story."
+        );
+      }
+    });
+  });
+};
+
+export const addStoryTags = (storyId, tags) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${storyId}/tags`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tags),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save new tags for the story."
+        );
+      }
+    });
+  });
+};
+
+export const addStoryGenres = (storyId, genres) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${storyId}/genres`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(genres),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save a new genres for the story."
+        );
+      }
+    });
+  });
+};

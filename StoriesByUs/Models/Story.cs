@@ -9,7 +9,7 @@ namespace StoriesByUs.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string Notes{ get; set; }
+        public string Notes { get; set; }
         public DateTime PublishedDateTime { get; set; }
         public DateTime LastUpdatedDateTime { get; set; }
         public bool Complete { get; set; }
@@ -23,7 +23,14 @@ namespace StoriesByUs.Models
         {
             get
             {
-                return Chapters.Sum(c => c.WordCount);
+                try 
+                {
+                    return Chapters.Sum(c => c.WordCount);
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
             }
         }
     }
