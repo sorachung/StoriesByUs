@@ -10,6 +10,8 @@ import {
   TextField,
   Button,
   Autocomplete,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { getAllRatings } from "../../modules/ratingManager";
@@ -30,6 +32,7 @@ export default function NewPostForm() {
   const [rating, setRating] = useState(1);
   const [tags, setTags] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
 
   const [chapterTitle, setChapterTitle] = useState("Chapter 1");
   const [chapterBody, setChapterBody] = useState("");
@@ -63,7 +66,7 @@ export default function NewPostForm() {
       summary: summary,
       notes: notes,
       rating: { id: rating },
-      complete: false,
+      complete: isComplete,
     };
 
     addStory(newStory).then((storyData) => {
@@ -222,6 +225,18 @@ export default function NewPostForm() {
                 multiline
                 onChange={(evt) => setChapterNotes(evt.target.value)}
                 rows={5}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl
+              onChange={(evt) => {
+                setIsComplete(evt.target.checked);
+              }}
+            >
+              <FormControlLabel
+                control={<Checkbox value={isComplete} />}
+                label="Complete?"
               />
             </FormControl>
           </Box>
