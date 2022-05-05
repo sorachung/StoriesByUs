@@ -17,6 +17,17 @@ namespace StoriesByUs.Controllers
             _userRepository = userRepository;
         }
 
+        [HttpGet("byId/{id}")]
+        public IActionResult GetUser(int id)
+        {
+            var user = _userRepository.GetbyId(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetUser(string firebaseUserId)
         {
