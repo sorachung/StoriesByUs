@@ -8,6 +8,7 @@ import BrowseByGenre from "./browse/BrowseByGenre";
 import BrowseByTag from "./browse/BrowseByTag";
 import Chapter from "./chapters/Chapter";
 import Home from "./dashboard/Home";
+import Profile from "./profiles/Profile";
 import NewPostForm from "./stories/NewPostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -37,6 +38,10 @@ export default function ApplicationViews({ isLoggedIn }) {
 
         <Route path="/works/post">
           {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route path="/users/:id(\d+)">
+          {isLoggedIn ? <Profile /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">
