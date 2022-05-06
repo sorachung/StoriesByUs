@@ -8,6 +8,8 @@ import BrowseByGenre from "./browse/BrowseByGenre";
 import BrowseByTag from "./browse/BrowseByTag";
 import Chapter from "./chapters/Chapter";
 import Home from "./dashboard/Home";
+import MyProfile from "./myProfile/MyProfile";
+import Profile from "./profiles/Profile";
 import NewPostForm from "./stories/NewPostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -37,6 +39,38 @@ export default function ApplicationViews({ isLoggedIn }) {
 
         <Route path="/works/post">
           {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route exact path="/users/:userId(\d+)">
+          {isLoggedIn ? <Profile defaultValue={0} /> : <Redirect to="/login" />}
+        </Route>
+        <Route exact path="/users/:userId(\d+)/stories">
+          {isLoggedIn ? <Profile defaultValue={1} /> : <Redirect to="/login" />}
+        </Route>
+        <Route exact path="/users/:userId(\d+)/bookmarks">
+          {isLoggedIn ? <Profile defaultValue={2} /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route exact path="/users/me">
+          {isLoggedIn ? (
+            <MyProfile defaultValue={0} />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+        <Route exact path="/users/me/stories">
+          {isLoggedIn ? (
+            <MyProfile defaultValue={1} />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+        <Route exact path="/users/me/bookmarks">
+          {isLoggedIn ? (
+            <MyProfile defaultValue={2} />
+          ) : (
+            <Redirect to="/login" />
+          )}
         </Route>
 
         <Route path="/login">

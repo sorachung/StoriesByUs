@@ -38,6 +38,13 @@ namespace StoriesByUs.Controllers
             return Ok(bookmark);
         }
 
+        [HttpGet("user/{userId}")]
+        public IActionResult GetBookmarksByUser(int userId)
+        {
+            return Ok(_bookmarkRepository.GetByUser(userId));
+        }
+
+
         [HttpPost]
         public IActionResult Post(Bookmark bookmark)
         {

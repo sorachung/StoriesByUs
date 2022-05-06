@@ -6,6 +6,7 @@
         public int StoryId { get; set; }
         public int UserId { get; set; }
         public string Notes { get; set; }
+        public Story Story { get; set; }
 
     }
 }

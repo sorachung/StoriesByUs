@@ -44,12 +44,18 @@ namespace StoriesByUs.Controllers
         public IActionResult GetByGenre(int id)
         {
             return Ok(_storyRepository.GetByGenre(id));
-        }
+        } 
 
         [HttpGet("tag/{id}")]
         public IActionResult GetByTag(int id)
         {
             return Ok(_storyRepository.GetByTag(id));
+        }
+
+        [HttpGet("user/{id}")]
+        public IActionResult GetByUser(int id)
+        {
+            return Ok(_storyRepository.GetByUser(id));
         }
 
         [HttpPost]

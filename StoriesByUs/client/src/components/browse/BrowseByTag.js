@@ -25,10 +25,8 @@ export default function BrowseByTag() {
   };
 
   useEffect(() => {
-    // if (tagId) {
     getStories();
     getTag();
-    // }
   }, [tagId]);
 
   return (

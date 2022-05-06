@@ -53,6 +53,42 @@ namespace StoriesByUs.Repositories
             }
         }
 
+        public User GetbyId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT u.Id AS uId, u.DisplayName, 
+                               u.Email, u.Bio, u.UserTypeId
+                          FROM [User] u
+                         WHERE u.Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    User user = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        user = new User()
+                        {
+                            Id = DbUtils.GetInt(reader, "uId"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            Bio = DbUtils.GetString(reader, "Bio"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                        };
+                    }
+                    reader.Close();
+
+                    return user;
+                }
+            }
+        }
+
         public void Add(User user)
         {
             using (var conn = Connection)
