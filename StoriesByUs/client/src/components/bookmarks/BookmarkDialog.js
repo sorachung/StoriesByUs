@@ -32,7 +32,6 @@ export default function BookmarkDialog({
 
   const removeBookmark = () => {
     deleteBookmark(bookmark.id).then(getCurrentUserBookmark);
-    putBookmark(bookmark).then(getCurrentUserBookmark);
   };
 
   useEffect(() => {
