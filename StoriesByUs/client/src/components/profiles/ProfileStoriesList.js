@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  getStoriesByGenre,
-  getStoriesByUser,
-} from "../../modules/storyManager";
-import { getGenreById } from "../../modules/genreManager";
+import { getStoriesByUser } from "../../modules/storyManager";
 import { Container } from "@mui/material";
-import { useParams, useHistory } from "react-router-dom";
 import StoryCard from "../stories/StoryCard";
 
 export default function ProfileStoriesList({ user }) {

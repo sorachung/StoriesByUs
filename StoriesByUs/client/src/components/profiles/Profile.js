@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { getUser } from "../../modules/userManager";
 import Dashboard from "./Dashboard";
 import ProfileStoriesList from "./ProfileStoriesList";
+import ProfileBookmarksList from "./ProfileBookmarksList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -93,7 +94,7 @@ export default function Profile() {
           <ProfileStoriesList user={user} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <ProfileBookmarksList user={user} />
         </TabPanel>
       </Box>
     </Container>
