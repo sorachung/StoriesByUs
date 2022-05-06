@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { getStoriesByUser } from "../../modules/storyManager";
-import { Container } from "@mui/material";
+import {
+  Container,
+  Box,
+  Card,
+  CardActions,
+  Button,
+  Stack,
+} from "@mui/material";
 import StoryCard from "../stories/StoryCard";
 
 export default function MyProfileStoriesList({ user }) {
   const [stories, setStories] = useState([]);
+  const [chosenStory, setChosenStory] = useState({});
 
   const getStories = () => {
     getStoriesByUser(user.id).then((storiesData) => setStories(storiesData));
@@ -16,9 +24,23 @@ export default function MyProfileStoriesList({ user }) {
 
   return (
     <Container maxWidth="xl">
-      {stories.map((story) => (
-        <StoryCard key={story.id} story={story} />
-      ))}
+      <Stack spacing={2}>
+        {stories.map((story) => (
+          <Box>
+            <StoryCard key={story.id} story={story} />
+            <Box component="section">
+              <Card variant="outlined" sx={{ minWidth: 275 }}>
+                <CardActions>
+                  <Button variant="contained">Edit Story Info</Button>
+                  <Button variant="contained">Edit Chapter</Button>
+                  <Button variant="contained">Add Chapter</Button>
+                  <Button variant="contained">Delete</Button>
+                </CardActions>
+              </Card>
+            </Box>
+          </Box>
+        ))}
+      </Stack>
     </Container>
   );
 }
