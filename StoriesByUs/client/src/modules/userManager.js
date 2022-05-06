@@ -43,3 +43,24 @@ export const getCurrentUser = () => {
     })
   );
 };
+
+export const editUserBio = (user) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/bio`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to edit a user's bio."
+        );
+      }
+    })
+  );
+};

@@ -111,5 +111,25 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void EditBio(User user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE [User]
+                           SET Bio = @Bio
+                         WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Bio", user.Bio);
+                    DbUtils.AddParameter(cmd, "@Id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

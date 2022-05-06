@@ -63,6 +63,17 @@ namespace StoriesByUs.Controllers
                 user);
         }
 
+        [HttpPut("bio/")]
+        public IActionResult PutBio(User user)
+        {
+            if (GetCurrentUser().Id != user.Id)
+            {
+                return BadRequest();
+            }
+            _userRepository.EditBio(user);
+            return NoContent();
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
