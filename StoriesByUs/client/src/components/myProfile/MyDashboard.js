@@ -10,9 +10,11 @@ import {
   DialogActions,
 } from "@mui/material";
 import React, { useState } from "react";
+import { editUserBio } from "../../modules/userManager";
 
-export default function MyDashboard({ user }) {
+export default function MyDashboard({ user, getAndSetCurrentUser }) {
   const [open, setOpen] = useState(false);
+  const [editedBio, setEditedBio] = useState(user.bio);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +22,11 @@ export default function MyDashboard({ user }) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const editBio = () => {
+    user.bio = editedBio;
+    editUserBio(user).then(() => getAndSetCurrentUser());
   };
 
   return (
@@ -50,11 +57,20 @@ export default function MyDashboard({ user }) {
             multiline
             rows="5"
             variant="outlined"
+            value={editedBio}
+            onChange={(evt) => setEditedBio(evt.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
+          <Button
+            onClick={() => {
+              editBio();
+              handleClose();
+            }}
+          >
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>
