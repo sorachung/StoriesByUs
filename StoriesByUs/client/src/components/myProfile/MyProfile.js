@@ -64,7 +64,7 @@ export default function MyProfile({ defaultValue }) {
 
   return (
     <Container maxWidth="xl">
-      <h1>{user.displayName}'s Profile</h1>
+      <h1>My Profile</h1>
       <Box
         sx={{
           flexGrow: 1,
@@ -80,9 +80,9 @@ export default function MyProfile({ defaultValue }) {
           aria-label="Vertical tabs example"
           sx={{ borderRight: 1, borderColor: "divider" }}
         >
-          <Tab label="Dashboard" {...a11yProps(0)} />
-          <Tab label="Stories" {...a11yProps(1)} />
-          <Tab label="Bookmarks" {...a11yProps(2)} />
+          <Tab label="My Dashboard" {...a11yProps(0)} />
+          <Tab label="My Stories" {...a11yProps(1)} />
+          <Tab label="My Bookmarks" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
           <MyDashboard user={user} />
