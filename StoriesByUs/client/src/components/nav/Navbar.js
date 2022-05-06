@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link as RouterLink, MemoryRouter } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -103,9 +103,30 @@ export default function Navbar({ isLoggedIn }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Stories</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Bookmarks</MenuItem>
+      <Link
+        component={RouterLink}
+        sx={{ textDecoration: "none" }}
+        color="text.primary"
+        to="/users/me"
+      >
+        <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
+      </Link>
+      <Link
+        component={RouterLink}
+        sx={{ textDecoration: "none" }}
+        color="text.primary"
+        to="/users/me/stories"
+      >
+        <MenuItem onClick={handleMenuClose}>My Stories</MenuItem>
+      </Link>
+      <Link
+        component={RouterLink}
+        sx={{ textDecoration: "none" }}
+        color="text.primary"
+        to="/users/me/bookmarks"
+      >
+        <MenuItem onClick={handleMenuClose}>My Bookmarks</MenuItem>
+      </Link>
       <MenuItem
         onClick={() => {
           handleMenuClose();

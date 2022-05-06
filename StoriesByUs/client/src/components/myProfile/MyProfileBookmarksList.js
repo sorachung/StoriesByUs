@@ -3,7 +3,7 @@ import { Container, Box, Card, CardHeader, CardContent } from "@mui/material";
 import StoryCard from "../stories/StoryCard";
 import { getBookmarksByUser } from "../../modules/bookmarkManager";
 
-export default function ProfileBookmarksList({ user }) {
+export default function MyProfileBookmarksList({ user }) {
   const [bookmarks, setBookmarks] = useState([]);
 
   const getBookmarks = () => {

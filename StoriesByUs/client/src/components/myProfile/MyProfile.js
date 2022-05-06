@@ -1,19 +1,11 @@
-import {
-  Container,
-  Tabs,
-  Tab,
-  Typography,
-  Link,
-  Stack,
-  Box,
-} from "@mui/material";
+import { Container, Tabs, Tab, Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { getUser } from "../../modules/userManager";
-import Dashboard from "./Dashboard";
-import ProfileStoriesList from "./ProfileStoriesList";
-import ProfileBookmarksList from "./ProfileBookmarksList";
+import { getCurrentUser, getUser } from "../../modules/userManager";
+import MyDashboard from "./MyDashboard";
+import MyProfileStoriesList from "./MyProfileStoriesList";
+import MyProfileBookmarksList from "./MyProfileBookmarksList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,9 +35,8 @@ function a11yProps(index) {
     "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
-export default function Profile({ defaultValue }) {
+export default function MyProfile({ defaultValue }) {
   const [user, setUser] = useState({});
-  const { userId } = useParams();
   const history = useHistory();
 
   const [value, setValue] = useState(defaultValue);
@@ -58,16 +49,14 @@ export default function Profile({ defaultValue }) {
   }, [defaultValue]);
 
   useEffect(() => {
-    if (userId) {
-      getUser(userId).then((userData) => {
-        if (userData === 404) {
-          history.push("/404");
-        } else {
-          setUser(userData);
-        }
-      });
-    }
-  }, [userId]);
+    getCurrentUser().then((userData) => {
+      if (userData === 404) {
+        history.push("/404");
+      } else {
+        setUser(userData);
+      }
+    });
+  }, []);
 
   if (!user.id) {
     return null;
@@ -96,13 +85,13 @@ export default function Profile({ defaultValue }) {
           <Tab label="Bookmarks" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <Dashboard user={user} />
+          <MyDashboard user={user} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ProfileStoriesList user={user} />
+          <MyProfileStoriesList user={user} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <ProfileBookmarksList user={user} />
+          <MyProfileBookmarksList user={user} />
         </TabPanel>
       </Box>
     </Container>

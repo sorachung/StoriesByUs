@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoriesByUs.Models;
 using StoriesByUs.Repositories;
+using System.Security.Claims;
 
 namespace StoriesByUs.Controllers
 {
@@ -26,6 +27,12 @@ namespace StoriesByUs.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        [HttpGet("me")]
+        public IActionResult GetMe()
+        {
+            return Ok(GetCurrentUser());
         }
 
         [HttpGet("{firebaseUserId}")]
@@ -54,6 +61,12 @@ namespace StoriesByUs.Controllers
                 nameof(GetUser),
                 new { firebaseUserId = user.FirebaseUserId },
                 user);
+        }
+
+        private User GetCurrentUser()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

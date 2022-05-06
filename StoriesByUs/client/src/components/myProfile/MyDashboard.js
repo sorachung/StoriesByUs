@@ -1,7 +1,7 @@
 import { Container, Box } from "@mui/material";
 import React from "react";
 
-export default function Dashboard({ user }) {
+export default function MyDashboard({ user }) {
   return (
     <Container maxWidth="xl">
       <Box component="section">
