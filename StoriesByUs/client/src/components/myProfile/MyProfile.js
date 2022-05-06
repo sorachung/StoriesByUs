@@ -44,11 +44,7 @@ export default function MyProfile({ defaultValue }) {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
-
-  useEffect(() => {
+  const getAndSetCurrentUser = () => {
     getCurrentUser().then((userData) => {
       if (userData === 404) {
         history.push("/404");
@@ -56,6 +52,14 @@ export default function MyProfile({ defaultValue }) {
         setUser(userData);
       }
     });
+  };
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
+    getAndSetCurrentUser();
   }, []);
 
   if (!user.id) {
@@ -85,7 +89,10 @@ export default function MyProfile({ defaultValue }) {
           <Tab label="My Bookmarks" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <MyDashboard user={user} />
+          <MyDashboard
+            user={user}
+            getAndSetCurrentUser={getAndSetCurrentUser}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <MyProfileStoriesList user={user} />
