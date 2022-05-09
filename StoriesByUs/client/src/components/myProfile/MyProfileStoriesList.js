@@ -7,8 +7,10 @@ import {
   CardActions,
   Button,
   Stack,
+  Link,
 } from "@mui/material";
 import StoryCard from "../stories/StoryCard";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function MyProfileStoriesList({ user }) {
   const [stories, setStories] = useState([]);
@@ -31,7 +33,10 @@ export default function MyProfileStoriesList({ user }) {
             <Box component="section">
               <Card variant="outlined" sx={{ minWidth: 275 }}>
                 <CardActions>
-                  <Button variant="contained">Edit Story Info</Button>
+                  <Link component={RouterLink} to={`/edit/works/${story.id}`}>
+                    <Button variant="contained">Edit Story Info</Button>
+                  </Link>
+
                   <Button variant="contained">Edit Chapter</Button>
                   <Button variant="contained">Add Chapter</Button>
                   <Button variant="contained">Delete</Button>

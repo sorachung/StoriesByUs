@@ -10,6 +10,7 @@ import Chapter from "./chapters/Chapter";
 import Home from "./dashboard/Home";
 import MyProfile from "./myProfile/MyProfile";
 import Profile from "./profiles/Profile";
+import EditPostForm from "./stories/EditStoryForm";
 import NewPostForm from "./stories/NewPostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -39,6 +40,10 @@ export default function ApplicationViews({ isLoggedIn }) {
 
         <Route path="/works/post">
           {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route path="/edit/works/:storyId(\d+)">
+          {isLoggedIn ? <EditPostForm /> : <Redirect to="/login" />}
         </Route>
 
         <Route exact path="/users/:userId(\d+)">
