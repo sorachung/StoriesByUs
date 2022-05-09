@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using StoriesByUs.Models;
 using StoriesByUs.Repositories;
 using StoriesByUs.Utils;
+using System;
 
 namespace StoriesByUs.Controllers
 {
@@ -13,9 +14,11 @@ namespace StoriesByUs.Controllers
     public class ChapterController : ControllerBase
     {
         private readonly IChapterRepository _chapterRepository;
-        public ChapterController(IChapterRepository chapterRepository)
+        private readonly IStoryRepository _storyRepository;
+        public ChapterController(IChapterRepository chapterRepository, IStoryRepository storyRepository)
         {
             _chapterRepository = chapterRepository;
+            _storyRepository = storyRepository;
         }        
 
         [HttpGet]
@@ -59,6 +62,24 @@ namespace StoriesByUs.Controllers
             _chapterRepository.Add(chapter);
 
             return CreatedAtAction("GetOneChapter", new { id = chapter.Id }, chapter);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Chapter chapter)
+        {
+            if (id != chapter.Id)
+            {
+                return BadRequest();
+            }
+            if (string.IsNullOrWhiteSpace(chapter.Notes))
+            {
+                chapter.Notes = null;
+            }
+            chapter.WordCount = WordCounter.Count(chapter.Body);
+
+            _chapterRepository.Edit(chapter);
+            _storyRepository.EditLastUpdatedDateTime(chapter.Story.Id, DateTime.Now);
+            return NoContent();
         }
     }
 }

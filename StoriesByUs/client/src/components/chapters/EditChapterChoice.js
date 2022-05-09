@@ -63,7 +63,10 @@ export default function EditChapterChoice() {
             ))}
           </Select>
 
-          <EditChapterForm chapter={chapters[chosenChapterNo - 1]} />
+          <EditChapterForm
+            chapter={chapters[chosenChapterNo - 1]}
+            storyId={storyId}
+          />
         </Stack>
       </Box>
     </Container>

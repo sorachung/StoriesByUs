@@ -64,3 +64,24 @@ export const addChapter = (chapter) => {
     });
   });
 };
+
+export const editChapter = (chapter) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${chapter.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(chapter),
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to edit a chapter."
+        );
+      }
+    });
+  });
+};

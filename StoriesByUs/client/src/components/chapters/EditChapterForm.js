@@ -14,8 +14,11 @@ import {
   Checkbox,
   Link,
 } from "@mui/material";
+import { editChapter } from "../../modules/chapterManager";
+import { useHistory } from "react-router-dom";
 
-export default function EditChapterForm({ chapter }) {
+export default function EditChapterForm({ chapter, storyId }) {
+  const history = useHistory();
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const [notes, setNotes] = useState();
@@ -28,6 +31,19 @@ export default function EditChapterForm({ chapter }) {
 
   const edit = (evt) => {
     evt.preventDefault();
+    const editedChapter = {
+      id: chapter.id,
+      title: title,
+      body: body,
+      notes: notes,
+      story: {
+        id: parseInt(storyId),
+      },
+    };
+
+    editChapter(editedChapter).then(() =>
+      history.push(`/works/${storyId}/chapters/${chapter.placeInOrder}`)
+    );
   };
 
   if (!chapter) {

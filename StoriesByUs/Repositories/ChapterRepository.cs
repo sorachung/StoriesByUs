@@ -109,5 +109,31 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Edit(Chapter chapter)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Chapter
+                           SET Title = @Title,
+                               Notes = @Notes,
+                               Body = @Body,
+                               WordCount = @WordCount
+                         WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", chapter.Id);
+                    DbUtils.AddParameter(cmd, "@Title", chapter.Title);
+                    DbUtils.AddParameter(cmd, "@Notes", chapter.Notes);
+                    DbUtils.AddParameter(cmd, "@Body", chapter.Body);
+                    DbUtils.AddParameter(cmd, "@WordCount", chapter.WordCount);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
