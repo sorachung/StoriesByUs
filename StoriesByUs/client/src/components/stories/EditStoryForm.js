@@ -139,9 +139,7 @@ export default function EditPostForm() {
                 }}
                 getOptionLabel={(option) => option.name ?? option}
                 value={tags ?? []}
-                isOptionEqualToValue={(option, value) =>
-                  option.iso === value.iso
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 options={tagsList}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
@@ -168,9 +166,7 @@ export default function EditPostForm() {
                 getOptionLabel={(option) => option.name ?? option}
                 options={genresList}
                 value={genres ?? []}
-                isOptionEqualToValue={(option, value) =>
-                  option.iso === value.iso
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField

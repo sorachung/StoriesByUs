@@ -28,8 +28,8 @@ export default function MyProfileStoriesList({ user }) {
     <Container maxWidth="xl">
       <Stack spacing={2}>
         {stories.map((story) => (
-          <Box>
-            <StoryCard key={story.id} story={story} />
+          <Box key={story.id}>
+            <StoryCard story={story} />
             <Box component="section">
               <Card variant="outlined" sx={{ minWidth: 275 }}>
                 <CardActions>
