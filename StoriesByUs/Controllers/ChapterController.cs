@@ -89,6 +89,10 @@ namespace StoriesByUs.Controllers
         public IActionResult Delete(int id, int storyId)
         {
             var story = _storyRepository.Get(storyId);
+            if (story.Chapters.Count == 1)
+            {
+                return BadRequest();
+            }
             if (story.User.Id != GetCurrentUser().Id)
             {
                 return Unauthorized();

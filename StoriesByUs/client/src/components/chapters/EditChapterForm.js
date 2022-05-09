@@ -121,13 +121,13 @@ export default function EditChapterForm({
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>
-          <Button
-            variant="contained"
-            onClick={handleClickOpen}
-            hidden={numberOfChapters === 1 ? true : false}
-          >
-            Delete Chapter
-          </Button>
+          {numberOfChapters === 1 ? (
+            ""
+          ) : (
+            <Button variant="contained" onClick={handleClickOpen}>
+              Delete Chapter
+            </Button>
+          )}
         </Stack>
       </Box>
       <Dialog open={open} onClose={handleClose}>
