@@ -13,15 +13,32 @@ import {
   FormControlLabel,
   Checkbox,
   Link,
+  Dialog,
+  DialogActions,
+  DialogTitle,
 } from "@mui/material";
-import { editChapter } from "../../modules/chapterManager";
+import { deleteChapter, editChapter } from "../../modules/chapterManager";
 import { useHistory } from "react-router-dom";
 
-export default function EditChapterForm({ chapter, storyId }) {
+export default function EditChapterForm({
+  chapter,
+  storyId,
+  numberOfChapters,
+}) {
   const history = useHistory();
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const [notes, setNotes] = useState();
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setTitle(chapter.title);
@@ -44,6 +61,12 @@ export default function EditChapterForm({ chapter, storyId }) {
     editChapter(editedChapter).then(() =>
       history.push(`/works/${storyId}/chapters/${chapter.placeInOrder}`)
     );
+  };
+
+  const deleteChosenChapter = () => {
+    deleteChapter(chapter.id, storyId).then(() => {
+      history.push(`/users/me/stories`);
+    });
   };
 
   if (!chapter) {
@@ -98,8 +121,31 @@ export default function EditChapterForm({ chapter, storyId }) {
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>
+          {numberOfChapters === 1 ? (
+            ""
+          ) : (
+            <Button variant="contained" onClick={handleClickOpen}>
+              Delete Chapter
+            </Button>
+          )}
         </Stack>
       </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          Are you sure you want to delete this Chapter? - {chapter.title}?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              deleteChosenChapter();
+              handleClose();
+            }}
+          >
+            Delete
+          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

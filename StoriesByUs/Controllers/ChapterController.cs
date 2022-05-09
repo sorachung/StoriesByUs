@@ -5,6 +5,7 @@ using StoriesByUs.Models;
 using StoriesByUs.Repositories;
 using StoriesByUs.Utils;
 using System;
+using System.Security.Claims;
 
 namespace StoriesByUs.Controllers
 {
@@ -15,10 +16,12 @@ namespace StoriesByUs.Controllers
     {
         private readonly IChapterRepository _chapterRepository;
         private readonly IStoryRepository _storyRepository;
-        public ChapterController(IChapterRepository chapterRepository, IStoryRepository storyRepository)
+        private readonly IUserRepository _userRepository;
+        public ChapterController(IChapterRepository chapterRepository, IStoryRepository storyRepository, IUserRepository userRepository)
         {
             _chapterRepository = chapterRepository;
             _storyRepository = storyRepository;
+            _userRepository = userRepository;
         }        
 
         [HttpGet]
@@ -80,6 +83,29 @@ namespace StoriesByUs.Controllers
             _chapterRepository.Edit(chapter);
             _storyRepository.EditLastUpdatedDateTime(chapter.Story.Id, DateTime.Now);
             return NoContent();
+        }
+
+        [HttpDelete("{id}/story/{storyId}")]
+        public IActionResult Delete(int id, int storyId)
+        {
+            var story = _storyRepository.Get(storyId);
+            if (story.Chapters.Count == 1)
+            {
+                return BadRequest();
+            }
+            if (story.User.Id != GetCurrentUser().Id)
+            {
+                return Unauthorized();
+            }
+
+            _chapterRepository.Delete(id, storyId);
+            return NoContent();
+        }
+
+        private User GetCurrentUser()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

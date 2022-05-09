@@ -66,6 +66,7 @@ export default function EditChapterChoice() {
           <EditChapterForm
             chapter={chapters[chosenChapterNo - 1]}
             storyId={storyId}
+            numberOfChapters={chapters.length}
           />
         </Stack>
       </Box>

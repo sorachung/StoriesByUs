@@ -140,7 +140,7 @@ namespace StoriesByUs.Controllers
         public IActionResult Delete(int id)
         {
             var story = _storyRepository.Get(id);
-            if (story.User.Id != id)
+            if (story.User.Id != GetCurrentUser().Id)
             {
                 return Unauthorized();
             }

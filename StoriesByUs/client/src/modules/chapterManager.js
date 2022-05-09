@@ -85,3 +85,22 @@ export const editChapter = (chapter) => {
     });
   });
 };
+
+export const deleteChapter = (chapterId, storyId) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/${chapterId}/story/${storyId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to delete a chapter."
+        );
+      }
+    })
+  );
+};
