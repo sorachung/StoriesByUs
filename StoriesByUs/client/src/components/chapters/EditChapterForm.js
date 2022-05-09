@@ -64,7 +64,7 @@ export default function EditChapterForm({
   };
 
   const deleteChosenChapter = () => {
-    deleteChapter(chapter.id).then(() => {
+    deleteChapter(chapter.id, storyId).then(() => {
       history.push(`/users/me/stories`);
     });
   };

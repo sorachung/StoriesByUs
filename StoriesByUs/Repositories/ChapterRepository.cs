@@ -135,5 +135,28 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Delete(int id, int storyId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        Update Chapter
+                           SET PlaceInOrder = PlaceInOrder - 1 
+                         WHERE StoryId = @StoryId AND PlaceInOrder > (SELECT PlaceInOrder FROM Chapter WHERE Id = @Id);
+                        DELETE FROM Chapter
+                         WHERE Id = @Id";
+
+                   
+                    DbUtils.AddParameter(cmd, "@StoryId", storyId);
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

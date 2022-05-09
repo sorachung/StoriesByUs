@@ -86,9 +86,9 @@ export const editChapter = (chapter) => {
   });
 };
 
-export const deleteChapter = (chapterId) => {
+export const deleteChapter = (chapterId, storyId) => {
   return getToken().then((token) =>
-    fetch(`${_apiUrl}/${chapterId}`, {
+    fetch(`${_apiUrl}/${chapterId}/story/${storyId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
