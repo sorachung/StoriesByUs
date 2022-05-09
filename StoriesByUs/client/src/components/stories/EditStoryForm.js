@@ -12,31 +12,41 @@ import {
   Autocomplete,
   FormControlLabel,
   Checkbox,
+  Link,
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams, Link as RouterLink } from "react-router-dom";
 import { getAllRatings } from "../../modules/ratingManager";
 import { getAllTags } from "../../modules/tagManager";
 import { getAllGenres } from "../../modules/genreManager";
-import { addChapter } from "../../modules/chapterManager";
 import {
-  addStory,
-  addStoryGenres,
-  addStoryTags,
+  editStory,
+  editStoryGenres,
+  editStoryTags,
+  getStory,
 } from "../../modules/storyManager";
 
-export default function NewPostForm() {
-  const history = useHistory();
-  const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
-  const [notes, setNotes] = useState(null);
-  const [rating, setRating] = useState(1);
-  const [tags, setTags] = useState([]);
-  const [genres, setGenres] = useState([]);
-  const [isComplete, setIsComplete] = useState(false);
+export default function EditPostForm() {
+  const { storyId } = useParams();
+  const [story, setStory] = useState({});
 
-  const [chapterTitle, setChapterTitle] = useState("Chapter 1");
-  const [chapterBody, setChapterBody] = useState("");
-  const [chapterNotes, setChapterNotes] = useState("");
+  useEffect(() => {
+    getStory(storyId).then((storyData) => {
+      if (storyData === 404) {
+        history.push("/404");
+      } else {
+        setStory(storyData);
+      }
+    });
+  }, []);
+
+  const history = useHistory();
+  const [title, setTitle] = useState();
+  const [summary, setSummary] = useState();
+  const [notes, setNotes] = useState();
+  const [rating, setRating] = useState();
+  const [tags, setTags] = useState();
+  const [genres, setGenres] = useState();
+  const [isComplete, setIsComplete] = useState();
 
   // lists from lookup tables
   const [ratingsList, setRatingsList] = useState([]);
@@ -59,9 +69,25 @@ export default function NewPostForm() {
     getGenres();
   }, []);
 
-  const publish = (evt) => {
+  useEffect(() => {
+    if (story.id) {
+      setTitle(story.title);
+      setSummary(story.summary);
+      setNotes(story.notes);
+      setRating(story.rating.id);
+      setGenres(story.genres);
+      setIsComplete(story.complete);
+      for (const tag of story.tags) {
+        delete tag.storyCount;
+      }
+      setTags(story.tags);
+    }
+  }, [story]);
+
+  const edit = (evt) => {
     evt.preventDefault();
-    const newStory = {
+    const editedStory = {
+      id: storyId,
       title: title,
       summary: summary,
       notes: notes,
@@ -69,27 +95,19 @@ export default function NewPostForm() {
       complete: isComplete,
     };
 
-    addStory(newStory).then((storyData) => {
-      const newChapter = {
-        story: { id: storyData.id },
-        title: chapterTitle,
-        body: chapterBody,
-        notes: chapterNotes,
-        placeInOrder: 1,
-      };
+    editStory(editedStory).then((storyData) => {
       Promise.all([
-        addChapter(newChapter),
-        addStoryTags(storyData.id, tags),
-        addStoryGenres(storyData.id, genres),
+        editStoryTags(storyData.id, tags),
+        editStoryGenres(storyData.id, genres),
       ]).then(() => history.push(`/works/${storyData.id}/chapters/1`));
     });
   };
 
   return (
     <Container maxWidth="xl">
-      <Box component="form" onSubmit={publish}>
+      <Box component="form" onSubmit={edit}>
         <Stack spacing={2}>
-          <h1>Post a New Story!</h1>
+          <h1>Edit Your Story</h1>
           <Box>
             <FormControl fullWidth>
               <InputLabel id="rating-label">Rating</InputLabel>
@@ -97,7 +115,7 @@ export default function NewPostForm() {
                 labelId="rating-label"
                 id="rating-select"
                 label="Rating"
-                value={rating}
+                value={rating ?? ""}
                 onChange={(evt) => {
                   setRating(parseInt(evt.target.value));
                 }}
@@ -120,6 +138,8 @@ export default function NewPostForm() {
                   setTags(values);
                 }}
                 getOptionLabel={(option) => option.name ?? option}
+                value={tags ?? []}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 options={tagsList}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
@@ -145,6 +165,8 @@ export default function NewPostForm() {
                 }}
                 getOptionLabel={(option) => option.name ?? option}
                 options={genresList}
+                value={genres ?? []}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
@@ -164,6 +186,8 @@ export default function NewPostForm() {
                 required
                 id="title"
                 label="Title"
+                value={title ?? ""}
+                InputLabelProps={{ shrink: !!title }}
                 onChange={(evt) => setTitle(evt.target.value)}
               />
             </FormControl>
@@ -175,8 +199,10 @@ export default function NewPostForm() {
                 id="summary"
                 label="Summary"
                 multiline
+                value={summary ?? ""}
                 onChange={(evt) => setSummary(evt.target.value)}
                 rows={5}
+                InputLabelProps={{ shrink: !!summary }}
               />
             </FormControl>
           </Box>
@@ -186,41 +212,8 @@ export default function NewPostForm() {
                 id="storyNotes"
                 label="Story Notes"
                 multiline
+                value={notes ?? ""}
                 onChange={(evt) => setNotes(evt.target.value)}
-                rows={5}
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                required
-                id="chapterTitle"
-                label="Chapter Title"
-                onChange={(evt) => setChapterTitle(evt.target.value)}
-                defaultValue="Chapter 1"
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                required
-                id="chapterBody"
-                label="Chapter Text"
-                multiline
-                onChange={(evt) => setChapterBody(evt.target.value)}
-                rows={30}
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                id="chapterNotes"
-                label="Chapter Notes"
-                multiline
-                onChange={(evt) => setChapterNotes(evt.target.value)}
                 rows={5}
               />
             </FormControl>
@@ -232,13 +225,13 @@ export default function NewPostForm() {
               }}
             >
               <FormControlLabel
-                control={<Checkbox value={isComplete} />}
+                control={<Checkbox checked={isComplete ?? false} />}
                 label="Complete?"
               />
             </FormControl>
           </Box>
           <Button variant="contained" color="primary" type="submit">
-            Publish
+            Save
           </Button>
         </Stack>
       </Box>

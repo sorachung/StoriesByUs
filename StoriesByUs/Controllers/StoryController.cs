@@ -99,6 +99,43 @@ namespace StoriesByUs.Controllers
             return CreatedAtAction("Get", genres);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Story story)
+        {
+            if (id != story.Id)
+            {
+                return BadRequest();
+            }
+            if (string.IsNullOrWhiteSpace(story.Notes))
+            {
+                story.Notes = null;
+            }
+
+            _storyRepository.Edit(story);
+
+            return CreatedAtAction("Get", new { id = story.Id }, story);
+        }
+
+        [HttpPut("{storyId}/tags")]
+        public IActionResult PutStoryTag(int storyId, List<Tag> tags)
+        {
+            var tagIds = tags.Select(t => t.Id).ToList();
+
+            _storyRepository.EditStoryTags(storyId, tagIds);
+
+            return CreatedAtAction("Get", tags);
+        }
+
+        [HttpPut("{storyId}/genres")]
+        public IActionResult PutStoryGenre(int storyId, List<Genre> genres)
+        {
+            var genreIds = genres.Select(g => g.Id).ToList();
+
+            _storyRepository.EditStoryGenres(storyId, genreIds);
+
+            return CreatedAtAction("Get", genres);
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

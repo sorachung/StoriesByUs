@@ -161,3 +161,66 @@ export const addStoryGenres = (storyId, genres) => {
     });
   });
 };
+
+export const editStory = (story) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${story.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(story),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save a new story."
+        );
+      }
+    });
+  });
+};
+
+export const editStoryTags = (storyId, tags) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${storyId}/tags`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tags),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save new tags for the story."
+        );
+      }
+    });
+  });
+};
+
+export const editStoryGenres = (storyId, genres) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/${storyId}/genres`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(genres),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to save a new genres for the story."
+        );
+      }
+    });
+  });
+};

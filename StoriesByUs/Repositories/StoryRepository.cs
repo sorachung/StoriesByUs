@@ -678,6 +678,7 @@ namespace StoriesByUs.Repositories
                     cmd.CommandText = @"INSERT INTO StoryTag (StoryId, TagId)
                         VALUES (@StoryId, @TagId0)";
 
+
                     for(var i = 1; i < tagIds.Count; i++)
                     {
                         cmd.CommandText += $", (@StoryId, @TagId{i}) ";
@@ -703,6 +704,91 @@ namespace StoriesByUs.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO StoryGenre (StoryId, GenreId)
+                        VALUES (@StoryId, @GenreId0)";
+
+                    for (var i = 1; i < genreIds.Count; i++)
+                    {
+                        cmd.CommandText += $", (@StoryId, @GenreId{i}) ";
+                    };
+
+                    for (var i = 0; i < genreIds.Count; i++)
+                    {
+                        DbUtils.AddParameter(cmd, $"@GenreId{i}", genreIds[i]);
+
+                    }
+                    DbUtils.AddParameter(cmd, "@StoryId", storyId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Edit(Story story)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                         UPDATE Story
+                            SET Title = @Title,
+                                Summary = @Summary,
+                                Notes = @Notes,
+                                RatingId = @RatingId,
+                                Complete = @Complete
+                          WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Title", story.Title);
+                    DbUtils.AddParameter(cmd, "@Summary", story.Summary);
+                    DbUtils.AddParameter(cmd, "@Notes", story.Notes);
+                    DbUtils.AddParameter(cmd, "@RatingId", story.Rating.Id);
+                    DbUtils.AddParameter(cmd, "@Complete", story.Complete);
+                    DbUtils.AddParameter(cmd, "@Id", story.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void EditStoryTags(int storyId, List<int> tagIds)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM StoryTag WHERE StoryId = @storyId;
+                        INSERT INTO StoryTag (StoryId, TagId)
+                        VALUES (@StoryId, @TagId0)";
+
+
+                    for (var i = 1; i < tagIds.Count; i++)
+                    {
+                        cmd.CommandText += $", (@StoryId, @TagId{i}) ";
+                    };
+
+                    for (var i = 0; i < tagIds.Count; i++)
+                    {
+                        DbUtils.AddParameter(cmd, $"@TagId{i}", tagIds[i]);
+
+                    }
+                    DbUtils.AddParameter(cmd, "@StoryId", storyId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void EditStoryGenres(int storyId, List<int> genreIds)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM StoryGenre WHERE StoryId = @storyId;
+                        INSERT INTO StoryGenre (StoryId, GenreId)
                         VALUES (@StoryId, @GenreId0)";
 
                     for (var i = 1; i < genreIds.Count; i++)
