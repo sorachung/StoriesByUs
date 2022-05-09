@@ -47,6 +47,45 @@ namespace StoriesByUs.Repositories
             }
         }
 
+        public List<Chapter> GetFromStory(int storyId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                           SELECT Id, Title, PlaceInOrder, WordCount, Body, Notes
+                              FROM Chapter c
+                             WHERE StoryId = @storyId
+                          ORDER BY PlaceInOrder";
+
+                    DbUtils.AddParameter(cmd, "@storyId", storyId);
+
+                    Chapter chapter = null;
+
+                    var reader = cmd.ExecuteReader();
+                    var chapters = new List<Chapter>();
+                    while (reader.Read())
+                    {
+                        chapter = new Chapter()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            Title = DbUtils.GetString(reader, "Title"),
+                            PlaceInOrder = DbUtils.GetInt(reader, "PlaceInOrder"),
+                            WordCount = DbUtils.GetInt(reader, "WordCount"),
+                            Body = DbUtils.GetString(reader, "Body"),
+                            Notes = DbUtils.GetString(reader, "Notes"),
+                        };
+                        chapters.Add(chapter);
+                    }
+                    reader.Close();
+
+                    return chapters;
+                }
+            }
+        }
+
         public void Add(Chapter chapter)
         {
             using (var conn = Connection)

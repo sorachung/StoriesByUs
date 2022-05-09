@@ -35,6 +35,17 @@ namespace StoriesByUs.Controllers
             return Ok(chapter);
         }
 
+        [HttpGet("all/story/{storyId}")]
+        public IActionResult GetChaptersFromStory(int storyId)
+        {
+            var chapters = _chapterRepository.GetFromStory(storyId);
+            if (chapters.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(chapters);
+        }
+
         [HttpPost]
         public IActionResult Post(Chapter chapter)
         {
@@ -47,7 +58,7 @@ namespace StoriesByUs.Controllers
 
             _chapterRepository.Add(chapter);
 
-            return CreatedAtAction("Get", new { id = chapter.Id }, chapter);
+            return CreatedAtAction("GetOneChapter", new { id = chapter.Id }, chapter);
         }
     }
 }
