@@ -157,11 +157,7 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
                                    LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
-                             WHERE s.Id in 
-                                            (SELECT s.Id 
-                                                FROM Story s
-                                                LEFT JOIN StoryGenre sg ON sg.StoryId = s.Id
-                                                WHERE u.Id= @id)
+                             WHERE u.Id= @id
                              ORDER BY s.LastUpdatedDateTime DESC;";
 
                     DbUtils.AddParameter(cmd, "@id", id);
@@ -541,11 +537,7 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
                                    LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark b ON b.StoryId = s.Id
-                             WHERE s.Id in 
-                                            (SELECT s.Id 
-                                                FROM Story s
-                                                LEFT JOIN StoryTag st ON st.StoryId = s.Id
-                                                WHERE s.Id = @id)
+                             WHERE s.Id = @id
                              ORDER BY s.LastUpdatedDateTime DESC;";
 
                     DbUtils.AddParameter(cmd, "@id", id);
