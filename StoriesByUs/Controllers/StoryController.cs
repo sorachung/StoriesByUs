@@ -29,7 +29,7 @@ namespace StoriesByUs.Controllers
             return Ok(_storyRepository.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
             var story = _storyRepository.Get(id);
@@ -56,6 +56,12 @@ namespace StoriesByUs.Controllers
         public IActionResult GetByUser(int id)
         {
             return Ok(_storyRepository.GetByUser(id));
+        }
+
+        [HttpGet("recent")]
+        public IActionResult GetRecent()
+        {
+            return Ok(_storyRepository.GetRecent());
         }
 
         [HttpPost]

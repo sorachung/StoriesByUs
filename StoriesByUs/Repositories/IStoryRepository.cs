@@ -6,6 +6,7 @@ namespace StoriesByUs.Repositories
 {
     public interface IStoryRepository
     {
+        List<Story> GetRecent();
         void DeleteStory(int storyId);
         void EditLastUpdatedDateTime(int storyId, DateTime datetime);
         void EditStoryGenres(int storyId, List<int> genreIds);
