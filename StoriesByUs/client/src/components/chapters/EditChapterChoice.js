@@ -40,6 +40,10 @@ export default function EditChapterChoice() {
     evt.preventDefault();
   };
 
+  if (chapters.length === 0) {
+    return null;
+  }
+
   return (
     <Container maxWidth="xl">
       <Box componter="section">
