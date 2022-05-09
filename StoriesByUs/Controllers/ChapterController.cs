@@ -61,7 +61,7 @@ namespace StoriesByUs.Controllers
 
             _chapterRepository.Add(chapter);
 
-            return CreatedAtAction("GetOneChapter", new { id = chapter.Id }, chapter);
+            return CreatedAtAction("GetOneChapter", new { storyId = chapter.Id, placeInOrder = chapter.PlaceInOrder }, chapter);
         }
 
         [HttpPut("{id}")]
