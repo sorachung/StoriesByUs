@@ -44,6 +44,12 @@ namespace StoriesByUs.Controllers
             return Ok(_bookmarkRepository.GetByUser(userId));
         }
 
+        [HttpGet("recent")]
+        public IActionResult GetRecentBookmarkForCurrentUser()
+        {
+            return Ok(_bookmarkRepository.GetRecentByUser(GetCurrentUser().Id)) ;
+        }
+
 
         [HttpPost]
         public IActionResult Post(Bookmark bookmark)

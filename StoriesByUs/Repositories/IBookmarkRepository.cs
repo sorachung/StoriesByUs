@@ -5,6 +5,7 @@ namespace StoriesByUs.Repositories
 {
     public interface IBookmarkRepository
     {
+        List<Bookmark> GetRecentByUser(int userId);
         List<Bookmark> GetByUser(int userId);
         void Delete(int id);
         void Edit(Bookmark bookmark);

@@ -1,17 +1,25 @@
 import { Container, Grid, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { getRecentStories } from "../../modules/storyManager";
+import { getRecentBookmarks } from "../../modules/bookmarkManager";
 import StoryCard from "../stories/StoryCard";
 
 export default function Home() {
-  const [recentBookmarks, setRecentBookmarks] = useState([]);
   const [recentStories, setRecentStories] = useState([]);
+  const [recentBookmarks, setRecentBookmarks] = useState([]);
 
-  const getAndSetRecentBookmarks = () => {
+  const getAndSetRecentStories = () => {
     getRecentStories().then((storyData) => setRecentStories(storyData));
   };
 
+  const getAndSetRecentBookmarks = () => {
+    getRecentBookmarks().then((bookmarkData) =>
+      setRecentBookmarks(bookmarkData)
+    );
+  };
+
   useEffect(() => {
+    getAndSetRecentStories();
     getAndSetRecentBookmarks();
   }, []);
 
@@ -24,14 +32,17 @@ export default function Home() {
         <Grid item xs={5}>
           <Stack spacing={2}>
             <h3>Recent Bookmarks</h3>
-            {recentStories.map((s) => (
-              <StoryCard story={s} />
+            {recentBookmarks.map((b) => (
+              <StoryCard story={b.story} key={b.id} />
             ))}
           </Stack>
         </Grid>
         <Grid item xs={5}>
           <Stack spacing={2}>
             <h3>Recent Stories</h3>
+            {recentStories.map((s) => (
+              <StoryCard story={s} key={s.id} />
+            ))}
           </Stack>
         </Grid>
       </Grid>
