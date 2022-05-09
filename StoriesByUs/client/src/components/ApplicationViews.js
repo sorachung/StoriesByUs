@@ -6,6 +6,7 @@ import Browse from "./browse/Browse";
 import BrowseAll from "./browse/BrowseAll";
 import BrowseByGenre from "./browse/BrowseByGenre";
 import BrowseByTag from "./browse/BrowseByTag";
+import AddChapterForm from "./chapters/AddChapterForm";
 import Chapter from "./chapters/Chapter";
 import EditChapterChoice from "./chapters/EditChapterChoice";
 import Home from "./dashboard/Home";
@@ -39,8 +40,12 @@ export default function ApplicationViews({ isLoggedIn }) {
           {isLoggedIn ? <Chapter /> : <Redirect to="/login" />}
         </Route>
 
-        <Route exact path="/works/post">
+        <Route exact path="/post/works">
           {isLoggedIn ? <NewPostForm /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route exact path="/post/works/:storyId(\d+)">
+          {isLoggedIn ? <AddChapterForm /> : <Redirect to="/login" />}
         </Route>
 
         <Route exact path="/edit/works/:storyId(\d+)">

@@ -158,7 +158,7 @@ export default function Navbar({ isLoggedIn }) {
         component={RouterLink}
         sx={{ textDecoration: "none" }}
         color="text.primary"
-        to="/works/post"
+        to="/post/works"
       >
         <MenuItem onClick={handleMenuClose}>Post a new Story</MenuItem>
       </Link>

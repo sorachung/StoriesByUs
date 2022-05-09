@@ -57,7 +57,9 @@ export default function MyProfileStoriesList({ user }) {
                   >
                     <Button variant="contained">Edit Chapter</Button>
                   </Link>
-                  <Button variant="contained">Add Chapter</Button>
+                  <Link component={RouterLink} to={`/post/works/${story.id}`}>
+                    <Button variant="contained">Add Chapter</Button>
+                  </Link>
                   <Button
                     variant="contained"
                     onClick={() => {
