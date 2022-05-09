@@ -1,10 +1,12 @@
 ﻿using StoriesByUs.Models;
+using System;
 using System.Collections.Generic;
 
 namespace StoriesByUs.Repositories
 {
     public interface IStoryRepository
     {
+        void EditLastUpdatedDateTime(int storyId, DateTime datetime);
         void EditStoryGenres(int storyId, List<int> genreIds);
         void EditStoryTags(int storyId, List<int> tagIds);
         void Edit(Story story);

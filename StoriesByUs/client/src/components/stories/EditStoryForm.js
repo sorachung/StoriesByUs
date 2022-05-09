@@ -97,9 +97,9 @@ export default function EditPostForm() {
 
     editStory(editedStory).then((storyData) => {
       Promise.all([
-        editStoryTags(storyData.id, tags),
-        editStoryGenres(storyData.id, genres),
-      ]).then(() => history.push(`/works/${storyData.id}/chapters/1`));
+        editStoryTags(story.id, tags),
+        editStoryGenres(story.id, genres),
+      ]).then(() => history.push(`/works/${story.id}/chapters/1`));
     });
   };
 

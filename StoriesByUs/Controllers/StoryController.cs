@@ -113,7 +113,7 @@ namespace StoriesByUs.Controllers
 
             _storyRepository.Edit(story);
 
-            return CreatedAtAction("Get", new { id = story.Id }, story);
+            return NoContent();
         }
 
         [HttpPut("{storyId}/tags")]
@@ -123,7 +123,7 @@ namespace StoriesByUs.Controllers
 
             _storyRepository.EditStoryTags(storyId, tagIds);
 
-            return CreatedAtAction("Get", tags);
+            return NoContent();
         }
 
         [HttpPut("{storyId}/genres")]
@@ -133,7 +133,7 @@ namespace StoriesByUs.Controllers
 
             _storyRepository.EditStoryGenres(storyId, genreIds);
 
-            return CreatedAtAction("Get", genres);
+            return NoContent();
         }
 
         private User GetCurrentUser()

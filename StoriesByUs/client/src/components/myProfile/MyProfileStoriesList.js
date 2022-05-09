@@ -36,8 +36,12 @@ export default function MyProfileStoriesList({ user }) {
                   <Link component={RouterLink} to={`/edit/works/${story.id}`}>
                     <Button variant="contained">Edit Story Info</Button>
                   </Link>
-
-                  <Button variant="contained">Edit Chapter</Button>
+                  <Link
+                    component={RouterLink}
+                    to={`/edit/works/${story.id}/chapters`}
+                  >
+                    <Button variant="contained">Edit Chapter</Button>
+                  </Link>
                   <Button variant="contained">Add Chapter</Button>
                   <Button variant="contained">Delete</Button>
                 </CardActions>

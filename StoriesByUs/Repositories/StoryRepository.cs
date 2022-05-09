@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using StoriesByUs.Models;
 using StoriesByUs.Utils;
 using System.Linq;
+using System;
 
 namespace StoriesByUs.Repositories
 {
@@ -802,6 +803,26 @@ namespace StoriesByUs.Repositories
 
                     }
                     DbUtils.AddParameter(cmd, "@StoryId", storyId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void EditLastUpdatedDateTime(int storyId, DateTime datetime)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                         UPDATE Story
+                            SET LastUpdatedDateTime = @datetime
+                          WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", storyId);
+                    DbUtils.AddParameter(cmd, "@datetime", datetime);
 
                     cmd.ExecuteNonQuery();
                 }

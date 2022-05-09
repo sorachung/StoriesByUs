@@ -173,7 +173,7 @@ export const editStory = (story) => {
       body: JSON.stringify(story),
     }).then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.status;
       } else {
         throw new Error(
           "An unknown error occurred while trying to save a new story."
@@ -194,7 +194,7 @@ export const editStoryTags = (storyId, tags) => {
       body: JSON.stringify(tags),
     }).then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.status;
       } else {
         throw new Error(
           "An unknown error occurred while trying to save new tags for the story."
@@ -215,7 +215,7 @@ export const editStoryGenres = (storyId, genres) => {
       body: JSON.stringify(genres),
     }).then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.status;
       } else {
         throw new Error(
           "An unknown error occurred while trying to save a new genres for the story."
