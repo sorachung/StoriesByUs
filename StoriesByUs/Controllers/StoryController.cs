@@ -136,6 +136,18 @@ namespace StoriesByUs.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var story = _storyRepository.Get(id);
+            if (story.User.Id != id)
+            {
+                return Unauthorized();
+            }
+
+            _storyRepository.DeleteStory(id);
+            return NoContent();
+        }
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

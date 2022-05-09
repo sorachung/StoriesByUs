@@ -828,5 +828,23 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void DeleteStory(int storyId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                         DELETE FROM Story
+                          WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", storyId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
