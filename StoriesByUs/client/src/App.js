@@ -4,6 +4,7 @@ import { CircularProgress } from "@mui/material";
 import ApplicationViews from "./components/ApplicationViews";
 import { onLoginStatusChange } from "./modules/authManager";
 import Navbar from "./components/nav/Navbar";
+import { UserTypeProvider } from "./components/user/UserTypeProvider";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -18,8 +19,10 @@ function App() {
 
   return (
     <Router>
-      <Navbar isLoggedIn={isLoggedIn} />
-      <ApplicationViews isLoggedIn={isLoggedIn} />
+      <UserTypeProvider>
+        <Navbar isLoggedIn={isLoggedIn} />
+        <ApplicationViews isLoggedIn={isLoggedIn} />
+      </UserTypeProvider>
     </Router>
   );
 }

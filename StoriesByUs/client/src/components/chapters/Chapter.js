@@ -9,24 +9,31 @@ import {
   Select,
   FormControl,
   MenuItem,
+  Dialog,
+  DialogActions,
+  DialogTitle,
 } from "@mui/material";
 import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
 import ChapterStoryInfo from "./ChapterStoryInfo";
-import { getStory } from "../../modules/storyManager";
+import { deleteStory, getStory } from "../../modules/storyManager";
 import BookmarkDialog from "../bookmarks/BookmarkDialog";
 import { getBookmarkForStoryAndCurrentUser } from "../../modules/bookmarkManager";
+import { UserTypeContext } from "../user/UserTypeProvider";
 
 export default function Chapter() {
+  const { currentUserType, updateCurrentUserType } =
+    useContext(UserTypeContext);
   const [chapter, setChapter] = useState({});
   const [story, setStory] = useState({});
   const { placeInOrder } = useParams();
   const { storyId } = useParams();
   const [existingBookmark, setExistingBookmark] = useState(null);
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,6 +41,14 @@ export default function Chapter() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
   };
 
   const getAndSetChapter = () => {
@@ -65,6 +80,7 @@ export default function Chapter() {
   };
 
   useEffect(() => {
+    updateCurrentUserType();
     getAndSetChapter();
     getAndSetStory();
 
@@ -74,6 +90,10 @@ export default function Chapter() {
   useEffect(() => {
     getCurrentUserBookmark();
   }, [storyId]);
+
+  const deleteChosenStory = () => {
+    deleteStory(story.id).then(() => history.push("/browse/all"));
+  };
 
   if (!story.chapters || !story.user) {
     return null;
@@ -88,6 +108,22 @@ export default function Chapter() {
         storyId={story.id}
         getCurrentUserBookmark={getCurrentUserBookmark}
       />
+      <Dialog open={openDelete} onClose={handleCloseDelete}>
+        <DialogTitle>
+          Are you sure you want to delete this Story - {story.title}?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              deleteChosenStory();
+              handleCloseDelete();
+            }}
+          >
+            Delete
+          </Button>
+          <Button onClick={handleCloseDelete}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
       <Container maxWidth="lg">
         <Stack spacing={2} divider={<Divider flexItem />}>
           <Stack direction="row" spacing={1}>
@@ -140,6 +176,14 @@ export default function Chapter() {
               <Button variant="contained" onClick={handleClickOpen}>
                 Bookmark
               </Button>
+            )}
+
+            {currentUserType === 1 ? (
+              <Button variant="contained" onClick={handleClickOpenDelete}>
+                Delete
+              </Button>
+            ) : (
+              ""
             )}
           </Stack>
           <Box component="section">
