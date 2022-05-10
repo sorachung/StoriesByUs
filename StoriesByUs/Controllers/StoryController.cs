@@ -44,7 +44,7 @@ namespace StoriesByUs.Controllers
         public IActionResult GetByGenre(int id)
         {
             return Ok(_storyRepository.GetByGenre(id));
-        } 
+        }
 
         [HttpGet("tag/{id}")]
         public IActionResult GetByTag(int id)
@@ -89,7 +89,7 @@ namespace StoriesByUs.Controllers
         public IActionResult PostStoryTag(int storyId, List<Tag> tags)
         {
             var tagIds = tags.Select(t => t.Id).ToList();
-            
+
             _storyRepository.AddStoryTags(storyId, tagIds);
 
             return CreatedAtAction("Get", tags);
@@ -147,13 +147,12 @@ namespace StoriesByUs.Controllers
         {
             var story = _storyRepository.Get(id);
             var currentUser = GetCurrentUser();
-            if (story.User.Id != currentUser.Id || currentUser.UserTypeId != 1)
+            if (story.User.Id == currentUser.Id || currentUser.UserTypeId == 1)
             {
-                return Unauthorized();
+                _storyRepository.DeleteStory(id);
+                return NoContent();
             }
-
-            _storyRepository.DeleteStory(id);
-            return NoContent();
+            return Unauthorized();
         }
         private User GetCurrentUser()
         {

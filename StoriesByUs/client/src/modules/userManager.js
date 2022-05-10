@@ -64,3 +64,24 @@ export const editUserBio = (user) => {
     })
   );
 };
+
+export const getCurrentUserType = () => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/type`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else if (res.status === 404) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get the current user's type."
+        );
+      }
+    });
+  });
+};

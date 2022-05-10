@@ -74,6 +74,12 @@ namespace StoriesByUs.Controllers
             return NoContent();
         }
 
+        [HttpGet("type")]
+        public IActionResult GetCurrentUserType()
+        {
+            return Ok(new { type = GetCurrentUser().UserTypeId });
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

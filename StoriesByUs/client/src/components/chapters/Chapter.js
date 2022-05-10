@@ -14,15 +14,18 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getChapter } from "../../modules/chapterManager";
 import DOMPurify from "dompurify";
 import ChapterStoryInfo from "./ChapterStoryInfo";
 import { deleteStory, getStory } from "../../modules/storyManager";
 import BookmarkDialog from "../bookmarks/BookmarkDialog";
 import { getBookmarkForStoryAndCurrentUser } from "../../modules/bookmarkManager";
+import { UserTypeContext } from "../user/UserTypeProvider";
 
 export default function Chapter() {
+  const { currentUserType, updateCurrentUserType } =
+    useContext(UserTypeContext);
   const [chapter, setChapter] = useState({});
   const [story, setStory] = useState({});
   const { placeInOrder } = useParams();
@@ -77,6 +80,7 @@ export default function Chapter() {
   };
 
   useEffect(() => {
+    updateCurrentUserType();
     getAndSetChapter();
     getAndSetStory();
 
@@ -88,7 +92,7 @@ export default function Chapter() {
   }, [storyId]);
 
   const deleteChosenStory = () => {
-    deleteStory(story.id).then(() => history.goBack());
+    deleteStory(story.id).then(() => history.push("/browse/all"));
   };
 
   if (!story.chapters || !story.user) {
@@ -174,9 +178,13 @@ export default function Chapter() {
               </Button>
             )}
 
-            <Button variant="contained" onClick={handleClickOpenDelete}>
-              Delete
-            </Button>
+            {currentUserType === 1 ? (
+              <Button variant="contained" onClick={handleClickOpenDelete}>
+                Delete
+              </Button>
+            ) : (
+              ""
+            )}
           </Stack>
           <Box component="section">
             <ChapterStoryInfo story={story} />
