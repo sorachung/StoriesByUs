@@ -2,6 +2,7 @@ import {
   Container,
   Tabs,
   Tab,
+  Button,
   Typography,
   Link,
   Stack,
@@ -10,7 +11,7 @@ import {
 import PropTypes from "prop-types";
 import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { getUser } from "../../modules/userManager";
+import { deactivateUser, getUser } from "../../modules/userManager";
 import Dashboard from "./Dashboard";
 import ProfileStoriesList from "./ProfileStoriesList";
 import ProfileBookmarksList from "./ProfileBookmarksList";
@@ -69,13 +70,26 @@ export default function Profile({ defaultValue }) {
     }
   }, [userId]);
 
+  const deactivate = () => {
+    deactivateUser(userId, user).then((status) => {
+      if (status === 204) {
+        history.push("/");
+      }
+    });
+  };
+
   if (!user.id) {
     return null;
   }
 
   return (
     <Container maxWidth="xl">
-      <h1>{user.displayName}'s Profile</h1>
+      <Stack spacing={2} direction="row">
+        <h1>{user.displayName}'s Profile</h1>
+        <Button variant="contained" onClick={deactivate}>
+          Deactivate
+        </Button>
+      </Stack>
       <Box
         sx={{
           flexGrow: 1,

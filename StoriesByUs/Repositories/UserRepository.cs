@@ -131,5 +131,24 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Deactivate(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE [User]
+                                                SET IsDeactivated = 1
+                                                WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
