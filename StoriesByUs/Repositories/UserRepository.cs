@@ -22,7 +22,7 @@ namespace StoriesByUs.Repositories
                                ut.[Name] AS UserTypeName
                           FROM [User] u
                                LEFT JOIN UserType ut on UserTypeId = ut.Id
-                         WHERE FirebaseUserId = @FirebaseuserId";
+                         WHERE FirebaseUserId = @FirebaseuserId AND IsDeactivated = 0";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
 
@@ -64,7 +64,7 @@ namespace StoriesByUs.Repositories
                         SELECT u.Id AS uId, u.DisplayName, 
                                u.Email, u.Bio, u.UserTypeId
                           FROM [User] u
-                         WHERE u.Id = @Id";
+                         WHERE u.Id = @Id AND IsDeactivated = 0";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
 

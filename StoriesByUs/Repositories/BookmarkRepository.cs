@@ -36,7 +36,7 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
                                    LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark bm ON bm.StoryId = s.Id
-                             WHERE b.UserId = @userId";
+                             WHERE b.UserId = @userId AND IsDeactivated = 0";
 
 
                     DbUtils.AddParameter(cmd, "@userId", userId);
@@ -176,7 +176,7 @@ namespace StoriesByUs.Repositories
                                    LEFT JOIN StoryTag st ON st.StoryId = s.Id       
                                    LEFT JOIN Tag t ON t.Id = st.TagId
                                    LEFT JOIN Bookmark bm ON bm.StoryId = s.Id
-                             WHERE b.Id IN (SELECT TOP 3 b.Id FROM Bookmark b WHERE b.UserId = @userId ORDER BY b.Id DESC)
+                             WHERE b.Id IN (SELECT TOP 3 b.Id FROM Bookmark b WHERE b.UserId = @userId ORDER BY b.Id DESC) AND IsDeactivated = 0
                              ORDER BY b.Id DESC";
 
 
