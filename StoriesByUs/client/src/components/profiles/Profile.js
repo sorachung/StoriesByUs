@@ -73,7 +73,7 @@ export default function Profile({ defaultValue }) {
   const deactivate = () => {
     deactivateUser(userId, user).then((status) => {
       if (status === 204) {
-        history.push("/");
+        history.push("/users/deactivated");
       }
     });
   };
