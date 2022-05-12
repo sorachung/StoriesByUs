@@ -108,6 +108,31 @@ namespace StoriesByUs.Controllers
             }
         }
 
+        [HttpPut("reactivate/{id}")]
+        public IActionResult Reactivate(int id, User profile)
+        {
+            if (id != profile.Id)
+            {
+                return BadRequest();
+            }
+            var currentUser = GetCurrentUser();
+            if (currentUser.UserTypeId == 1)
+            {
+                _userRepository.Reactivate(id);
+                return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpGet("deactivated")]
+        public IActionResult GetDeactivatedUsers()
+        {
+            return Ok(_userRepository.GetDeactivatedUsers());
+        }
+
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;

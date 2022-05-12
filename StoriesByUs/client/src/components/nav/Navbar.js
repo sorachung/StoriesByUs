@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "@mui/material";
 import { logout } from "../../modules/authManager";
+import { UserTypeContext } from "../user/UserTypeProvider";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,12 +57,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar({ isLoggedIn }) {
+  const { currentUserType, updateCurrentUserType } =
+    useContext(UserTypeContext);
+
+  useEffect(() => {
+    updateCurrentUserType();
+  }, []);
   const [anchorEl, setAnchorEl] = useState(null);
   const [postAnchorEl, setPostAnchorEl] = useState(null);
+  const [adminAnchorEl, setAdminAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isPostMenuOpen = Boolean(postAnchorEl);
+  const isAdminMenuOpen = Boolean(adminAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -72,6 +81,10 @@ export default function Navbar({ isLoggedIn }) {
     setPostAnchorEl(event.currentTarget);
   };
 
+  const handleAdminMenuOpen = (event) => {
+    setAdminAnchorEl(event.currentTarget);
+  };
+
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -79,6 +92,7 @@ export default function Navbar({ isLoggedIn }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
     setPostAnchorEl(null);
+    setAdminAnchorEl(null);
     handleMobileMenuClose();
   };
 
@@ -173,6 +187,33 @@ export default function Navbar({ isLoggedIn }) {
     </Menu>
   );
 
+  const renderAdminMenu = (
+    <Menu
+      anchorEl={adminAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isAdminMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <Link
+        component={RouterLink}
+        sx={{ textDecoration: "none" }}
+        color="text.primary"
+        to="/users/deactivated"
+      >
+        <MenuItem onClick={handleMenuClose}>Deactivated Users</MenuItem>
+      </Link>
+    </Menu>
+  );
+
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -190,6 +231,20 @@ export default function Navbar({ isLoggedIn }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={handleAdminMenuOpen}>
+        <Typography
+          variant="h6"
+          noWrap
+          padding="0 1em"
+          component="div"
+          sx={{ display: { xs: "block", sm: "block" } }}
+          onClick={handleAdminMenuOpen}
+          aria-controls={menuId}
+          aria-haspopup="true"
+        >
+          <p>Admin</p>
+        </Typography>
+      </MenuItem>
       <MenuItem onClick={handlePostMenuOpen}>
         <Typography
           variant="h6"
@@ -272,6 +327,24 @@ export default function Navbar({ isLoggedIn }) {
                   display: { xs: "none", md: "flex" },
                 }}
               >
+                {currentUserType === 1 ? (
+                  <MenuItem onClick={handleAdminMenuOpen}>
+                    <Typography
+                      variant="h6"
+                      noWrap
+                      padding="0 1em"
+                      component="div"
+                      sx={{ display: "block" }}
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      color="#FFF"
+                    >
+                      Admin
+                    </Typography>
+                  </MenuItem>
+                ) : (
+                  ""
+                )}
                 <MenuItem onClick={handlePostMenuOpen}>
                   <Typography
                     variant="h6"
@@ -355,6 +428,7 @@ export default function Navbar({ isLoggedIn }) {
       {renderMobileMenu}
       {renderProfileMenu}
       {renderPostMenu}
+      {currentUserType === 1 ? renderAdminMenu : ""}
     </Box>
   );
 }

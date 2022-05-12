@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -11,11 +11,20 @@ import Chapter from "./chapters/Chapter";
 import EditChapterChoice from "./chapters/EditChapterChoice";
 import Home from "./dashboard/Home";
 import MyProfile from "./myProfile/MyProfile";
+import DeactivatedProfilesList from "./profiles/DeactivatedProfilesList";
 import Profile from "./profiles/Profile";
 import EditPostForm from "./stories/EditStoryForm";
 import NewPostForm from "./stories/NewPostForm";
+import { UserTypeContext } from "./user/UserTypeProvider";
 
 export default function ApplicationViews({ isLoggedIn }) {
+  const { currentUserType, updateCurrentUserType } =
+    useContext(UserTypeContext);
+
+  useEffect(() => {
+    updateCurrentUserType();
+  }, []);
+
   return (
     <main>
       <Switch>
@@ -64,6 +73,14 @@ export default function ApplicationViews({ isLoggedIn }) {
         </Route>
         <Route exact path="/users/:userId(\d+)/bookmarks">
           {isLoggedIn ? <Profile defaultValue={2} /> : <Redirect to="/login" />}
+        </Route>
+
+        <Route exact path="/users/deactivated">
+          {isLoggedIn && currentUserType === 1 ? (
+            <DeactivatedProfilesList />
+          ) : (
+            <Redirect to="/login" />
+          )}
         </Route>
 
         <Route exact path="/users/me">

@@ -150,5 +150,65 @@ namespace StoriesByUs.Repositories
                 }
             }
         }
+
+        public void Reactivate(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE [User]
+                                                SET IsDeactivated = 0
+                                                WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<User> GetDeactivatedUsers()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT u.Id AS uId, u.DisplayName, 
+                               u.Email, u.Bio, ut.[Name], u.UserTypeId
+                          FROM [User] u
+                               JOIN UserType ut ON u.UserTypeId = ut.Id
+                         WHERE IsDeactivated = 1";
+
+                    var reader = cmd.ExecuteReader();
+
+                    var users = new List<User>();
+
+                    while (reader.Read())
+                    {
+                        var user = new User()
+                        {
+                            Id = DbUtils.GetInt(reader, "uId"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            Bio = DbUtils.GetString(reader, "Bio"),
+                            UserType = new UserType()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "Name")
+                            }
+                        };
+
+                        users.Add(user);
+                    }
+
+                    return users;
+                }
+            }
+        }
     }
 }
