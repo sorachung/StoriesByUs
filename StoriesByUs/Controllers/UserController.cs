@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoriesByUs.Models;
 using StoriesByUs.Repositories;
+using System;
 using System.Security.Claims;
 
 namespace StoriesByUs.Controllers
@@ -78,6 +79,58 @@ namespace StoriesByUs.Controllers
         public IActionResult GetCurrentUserType()
         {
             return Ok(new { type = GetCurrentUser().UserTypeId });
+        }
+
+        [HttpPut("deactivate/{id}")]
+        public IActionResult Deactivate(int id, User user)
+        {
+            try
+            {
+                if (id != user.Id)
+                {
+                    return BadRequest();
+                }
+                var currentUser = GetCurrentUser();
+                if (currentUser.UserTypeId == 1)
+                {
+                    _userRepository.Deactivate(id);
+                    return NoContent();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("reactivate/{id}")]
+        public IActionResult Reactivate(int id, User profile)
+        {
+            if (id != profile.Id)
+            {
+                return BadRequest();
+            }
+            var currentUser = GetCurrentUser();
+            if (currentUser.UserTypeId == 1)
+            {
+                _userRepository.Reactivate(id);
+                return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpGet("deactivated")]
+        public IActionResult GetDeactivatedUsers()
+        {
+            return Ok(_userRepository.GetDeactivatedUsers());
         }
 
         private User GetCurrentUser()

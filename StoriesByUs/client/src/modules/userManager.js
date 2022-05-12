@@ -85,3 +85,64 @@ export const getCurrentUserType = () => {
     });
   });
 };
+
+export const deactivateUser = (userId, user) => {
+  return getToken().then((token) =>
+    fetch(`${_apiUrl}/deactivate/${userId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to deactivate a user."
+        );
+      }
+    })
+  );
+};
+
+export const reactivateUser = (user) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/reactivate/${user.id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    }).then((res) => {
+      if (res.ok) {
+        return res.status;
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to reactivate a user profile."
+        );
+      }
+    });
+  });
+};
+
+export const getAllUsersDeactivated = () => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/deactivated`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(
+          "An unknown error occurred while trying to get deactivated users."
+        );
+      }
+    });
+  });
+};

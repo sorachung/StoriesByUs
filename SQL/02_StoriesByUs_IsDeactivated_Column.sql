@@ -1,0 +1,6 @@
+﻿USE [StoriesByUs]
+GO
+
+ALTER TABLE [User]
+ADD IsDeactivated BIT NOT NULL
+CONSTRAINT D_User_Deactivated DEFAULT 0 WITH VALUES
