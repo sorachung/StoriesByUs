@@ -96,7 +96,7 @@ namespace StoriesByUs.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO User (FirebaseUserId, DisplayName, 
+                    cmd.CommandText = @"INSERT INTO [User] (FirebaseUserId, DisplayName, 
                                                                  Email, Bio, UserTypeId)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirebaseUserId, @DisplayName, 

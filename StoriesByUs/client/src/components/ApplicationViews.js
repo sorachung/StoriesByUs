@@ -22,8 +22,10 @@ export default function ApplicationViews({ isLoggedIn }) {
     useContext(UserTypeContext);
 
   useEffect(() => {
-    updateCurrentUserType();
-  }, []);
+    if (isLoggedIn) {
+      updateCurrentUserType();
+    }
+  }, [isLoggedIn]);
 
   return (
     <main>

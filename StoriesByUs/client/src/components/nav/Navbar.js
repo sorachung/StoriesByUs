@@ -61,8 +61,11 @@ export default function Navbar({ isLoggedIn }) {
     useContext(UserTypeContext);
 
   useEffect(() => {
-    updateCurrentUserType();
-  }, []);
+    if (isLoggedIn) {
+      updateCurrentUserType();
+    }
+  }, [isLoggedIn]);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [postAnchorEl, setPostAnchorEl] = useState(null);
   const [adminAnchorEl, setAdminAnchorEl] = useState(null);
@@ -312,7 +315,7 @@ export default function Navbar({ isLoggedIn }) {
                 </Link>
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
-              <Search>
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -320,7 +323,7 @@ export default function Navbar({ isLoggedIn }) {
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
                 />
-              </Search>
+              </Search> */}
               <Box sx={{ flexGrow: 1 }} />
               <Box
                 sx={{
